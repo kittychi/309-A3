@@ -23,9 +23,16 @@ class Store extends CI_Controller {
     		$this->load->model('product_model');
     		$products = $this->product_model->getAll();
     		$data['products']=$products;
-    		$this->load->view('product/list.php',$data);
+    		$this->load->view('product/storeFront.php',$data);
     }
     
+    function viewProducts() { 
+    	$this->load->model('product_model');
+		$products = $this->product_model->getAll();
+		$data['products']=$products;
+		$this->load->view('product/list.php',$data);
+    }
+
     function newForm() {
 	    	$this->load->view('product/newForm.php');
     }
