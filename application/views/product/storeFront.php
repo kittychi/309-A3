@@ -1,7 +1,5 @@
 <h2>Product Table</h2>
 <?php 
-		echo "<p>" . anchor('store/newForm','Add New') . "</p>";
- 	  
 		echo "<table>";
 		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th></tr>";
 		
@@ -12,7 +10,7 @@
 			echo "<td>" . $product->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 				
-			echo "<td>" . anchor("store/delete/$product->id",'Add to Cart') . "</td>";
+			echo "<td>" . anchor("",'Add to Cart') . "</td>";
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
 				
 			echo "</tr>";
