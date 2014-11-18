@@ -1,6 +1,8 @@
 <h2>Product Table</h2>
 <?php 
-		echo "<table>";
+		echo "<p>" . anchor('account/registerForm', 'Register') . "</p>";
+
+		echo "<table class='table'>";
 		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th></tr>";
 		
 		foreach ($products as $product) {
@@ -12,9 +14,7 @@
 				
 			echo "<td>" . anchor("",'Add to Cart') . "</td>";
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
-				
 			echo "</tr>";
 		}
 		echo "<table>";
-?>	
-
+?>

@@ -23,6 +23,7 @@ class Store extends CI_Controller {
     		$this->load->model('product_model');
     		$products = $this->product_model->getAll();
     		$data['products']=$products;
+    		$this->load->view('common/scripts.html');
     		$this->load->view('product/storeFront.php',$data);
     }
     
