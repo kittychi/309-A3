@@ -1,8 +1,9 @@
   <h2>Register for an account</h2>
 
   <div class='col-md-4 col-md-offset-4'>
-<?php
 
+<?php
+  echo anchor('store/index', 'Back', 'id="backbtn" class="btn btn-primary"');
   // echo validation_errors(); 
 
   echo form_open('account/register');

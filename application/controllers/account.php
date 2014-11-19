@@ -2,11 +2,6 @@
 
 class Account extends CI_Controller {
 
-	function __autoload($class_name) {
-    include $class_name . '.php';
-	}
-
-
 	function __construct() {
     		// Call the Controller constructor
 	    	parent::__construct();
@@ -14,6 +9,7 @@ class Account extends CI_Controller {
 
 	function registerForm() {
 		$this->load->view('common/scripts.html');
+
 		$this->load->view('account/register.php');
 	}
 

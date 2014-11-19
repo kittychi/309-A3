@@ -4,7 +4,7 @@ class Customer_model extends CI_Model {
 	function getAll()
 	{  
 		$query = $this->db->get('customers');
-		return $query->result('Customers');
+		return $query->result('Customer');
 	}  
 	
 	function get($username)

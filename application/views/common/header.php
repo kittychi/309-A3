@@ -1,8 +1,12 @@
 <?php
 		if ($loggedin) {
-			echo '<h3>Welcome ' . $username . ' ' . $isadmin . '</h3>';
+			echo '<h3>Welcome ' . $username  . '</h3>';
 			echo anchor('account/logout', 'Logout', 'id="logoutbtn" class="btn btn-primary"');
 
+			if ($isadmin) {
+				echo anchor('admin/allorders', 'List All Orders', 'id="allordersbtn" class="btn btn-primary"');
+				echo anchor('admin/allusers', 'List All Users', 'id="allusersbtn" class="btn btn-primary"');
+			}
 		} else {
 
 			// echo $username;
