@@ -17,9 +17,7 @@
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 
 			echo "<td>"
-			$formattr = array('class' => 'form-inline');
-			$labelattr = array('class' => 'sr-only');
-			echo form_open('store/addCart', $formattr);
+			echo form_open('store/addCart');
 			echo form_error('quant');
 			$quant = array(
 			             'name'        => 'quant',
