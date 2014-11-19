@@ -21,29 +21,27 @@ class Store extends CI_Controller {
     function index() {
 		$this->load->model('product_model');
 		$products = $this->product_model->getAll();
-		$data['products']=$products;
+		$viewdata['products']=$products;
 
-		$data['loggedin'] = $this->session->userdata('logged_in');
-		$data['username'] = $this->session->userdata('username');
-		$data['isadmin'] = $this->session->userdata('isadmin');
-
-		// $data['loggedin'] = True;
-		// $data['username'] = 'admin'; 
-
-		$this->load->view('common/scripts.html');
-		$this->load->view('common/header.php', $data);
-		$this->load->view('product/storeFront.php',$data);
+		$data['viewdata'] = $viewdata; 
+		$data['view'] = 'product/storeFront.php';
+		$this->load->view('common/template.php',$data);
     }
     
     function viewProducts() { 
     	$this->load->model('product_model');
 		$products = $this->product_model->getAll();
-		$data['products']=$products;
-		$this->load->view('product/list.php',$data);
+		$viewdata['products']=$products;
+
+		$data['viewdata'] = $viewdata; 
+		$data['view'] = 'product/list.php';
+		$this->load->view('common/template.php',$data);
     }
 
     function newForm() {
-	    	$this->load->view('product/newForm.php');
+    	$data['view']='product/newForm.php';
+    	$data['viewdata']='';
+    	$this->load->view('common/template.php', $data);
     }
     
 	function create() {
@@ -76,23 +74,31 @@ class Store extends CI_Controller {
 				$this->load->view('product/newForm.php',$data);
 				return;
 			}
-			
-			$this->load->view('product/newForm.php');
+
+			$data['view']='product/newForm.php';
+	    	$data['viewdata']='';
+	    	$this->load->view('common/template.php', $data);
 		}	
 	}
 	
 	function read($id) {
 		$this->load->model('product_model');
 		$product = $this->product_model->get($id);
-		$data['product']=$product;
-		$this->load->view('product/read.php',$data);
+		$viewdata['product']=$product;
+		
+		$data['view']='product/read.php';
+    	$data['viewdata']=$viewdata;
+    	$this->load->view('common/template.php', $data);
 	}
 	
 	function editForm($id) {
 		$this->load->model('product_model');
 		$product = $this->product_model->get($id);
-		$data['product']=$product;
-		$this->load->view('product/editForm.php',$data);
+		$viewdata['product']=$product;
+		
+		$data['view']='product/editForm.php';
+    	$data['viewdata']=$viewdata;
+    	$this->load->view('common/template.php', $data);
 	}
 	
 	function update($id) {
@@ -119,8 +125,11 @@ class Store extends CI_Controller {
 			$product->name = set_value('name');
 			$product->description = set_value('description');
 			$product->price = set_value('price');
-			$data['product']=$product;
-			$this->load->view('product/editForm.php',$data);
+			$viewdata['product']=$product;
+		
+			$data['view']='product/editForm.php';
+	    	$data['viewdata']=$viewdata;
+	    	$this->load->view('common/template.php', $data);
 		}
 	}
     	

@@ -8,9 +8,9 @@ class Account extends CI_Controller {
 	}
 
 	function registerForm() {
-		$this->load->view('common/scripts.html');
-
-		$this->load->view('account/register.php');
+		$data['view'] = 'account/register.php'; 
+		$data['viewdata'] = '';
+		$this->load->view('common/template.php', $data);
 	}
 
 	function register() {
@@ -54,10 +54,14 @@ class Account extends CI_Controller {
 				$customer->last = set_value('lastname');
 				$customer->login = set_value('username');
 				$customer->email = set_value('email');
-				$data['customer']=$customer;
+				$viewdata['customer']=$customer;
 
-				$this->load->view('common/scripts.html');
-				$this->load->view('account/register.php', $data);
+				// $this->load->view('common/scripts.html');
+				// $this->load->view('account/register.php', $data);
+
+				$data['view'] = 'account/register.php'; 
+				$data['viewdata'] =$viewdata;
+				$this->load->view('common/template.php', $data);
 			}
 		} catch (Exception $e) {
 
@@ -67,10 +71,28 @@ class Account extends CI_Controller {
 	}
 
 	function login() {
-		$this->load->model('customer_model');
+		// 
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database');
 
-		$username =$this->input->post('username');
-		$password =$this->input->post('password');
+		// $result = $this->customer_model->login($username, $password);
+		if (!$this->form_validation->run()) {
+			$data['view'] = 'account/login.php';
+			$data['viewdata'] = '';
+			$this->load->view('common/template.php', $data);
+		}
+		else {
+			redirect('store/index', 'refresh');
+		}
+	}
+
+	function check_database($password) {
+		//Field validation succeeded.  Validate against database
+		$username = $this->input->post('username');
+
+		//query the database
+		$this->load->model('customer_model');
 		$result = $this->customer_model->login($username, $password);
 
 		if($result) {
@@ -83,13 +105,15 @@ class Account extends CI_Controller {
 			if ($username=='admin') {
 				$this->session->set_userdata('isadmin', true);
 			}
+			return true;
 		}
 		else
 		{
 			$this->form_validation->set_message('check_database', 'Invalid username or password');
+			return false; 
 		}
-			redirect('store/index', 'refresh');
 	}
+
 
 	function logout() {
 		if ($this->session->userdata('logged_in')) {

@@ -3,7 +3,7 @@
   <div class='col-md-4 col-md-offset-4'>
 
 <?php
-  echo anchor('store/index', 'Back', 'id="backbtn" class="btn btn-primary"');
+  // echo anchor('store/index', 'Back', 'id="backbtn" class="btn btn-primary"');
   // echo validation_errors(); 
 
   echo form_open('account/register');

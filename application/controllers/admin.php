@@ -10,14 +10,11 @@ class Admin extends CI_Controller {
 	function allusers() {
 		$this->load->model('customer_model');
 		$customers = $this->customer_model->getAll();
-		$data['customers']=$customers;
-		$data['loggedin'] = $this->session->userdata('logged_in');
-		$data['username'] = $this->session->userdata('username');
-		$data['isadmin'] = $this->session->userdata('isadmin');
-		
-		$this->load->view('common/scripts.html');
-		$this->load->view('common/header.php', $data);	
-		$this->load->view('admin/listCustomers.php',$data);
+		$viewdata['customers']=$customers;
+
+		$data['view'] = 'admin/listCustomers.php'; 
+		$data['viewdata'] = $viewdata; 
+		$this->load->view('common/template.php',$data);
 	}
 
 	function userOrdersDetails($cid) {
@@ -36,16 +33,20 @@ class Admin extends CI_Controller {
 				$orderdetail[] = $detail; 
 			}
 		}
-		$data['customer'] = $customer; 
-		$data['orderdetails'] = $orderdetail; 
+		$viewdata['customer'] = $customer; 
+		$viewdata['orderdetails'] = $orderdetail; 
+		$data['viewdata'] = $viewdata; 
+		$data['view'] ='admin/listOrderDetails.php';
 
-		$data['loggedin'] = $this->session->userdata('logged_in');
-		$data['username'] = $this->session->userdata('username');
-		$data['isadmin'] = $this->session->userdata('isadmin');
+		$this->load->view('common/template.php', $data);
+	}
 
-		$this->load->view('common/scripts.html');
-		$this->load->view('common/header.php', $data);
-		$this->load->view('admin/listOrderDetails.php', $data);
+	function deleteAllUsers() {
+		$this->load->model('orderitem_model');
+		$this->load->model('order_model');
+		$this->load->model('customer_model');
+
+		redirect('admin/allusers', 'refresh');
 	}
 }
 

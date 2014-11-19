@@ -1,6 +1,7 @@
 <h2>Customers Table</h2>
-<?php 
 
+<?php 
+		echo anchor("admin/deleteAllUsers",'Delete everything', "onClick='return confirm(\"Do you really want to delete all records? This cannot be undone!\");'");
 		echo "<table class='table'>";
 		echo "<tr><th>Name</th><th>Email</th><th>Username</th></tr>";
 		

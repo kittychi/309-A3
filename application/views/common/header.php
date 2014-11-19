@@ -1,3 +1,14 @@
+<header>
+<div id='banner'>
+
+	<?php 
+
+	$this->load->helper('html');
+	$banner = img('images/Banner.jpg');
+	echo anchor('store/index', $banner); 
+	
+	?> 
+</div>
 <?php
 		if ($loggedin) {
 			echo '<h3>Welcome ' . $username  . '</h3>';
@@ -16,7 +27,6 @@
 			$labelattr = array('class' => 'sr-only');
 			echo form_open('account/login', $formattr);
 			echo form_label('Username', 'username', $labelattr);
-			echo form_error('username');
 			$username = array(
 			             'name'        => 'username',
 			             'id'          => 'username',
@@ -28,7 +38,6 @@
 			echo form_input($username);
 	
 		    echo form_label('Password', 'password', $labelattr);
-		    echo form_error('password');
 		    $password = array(
 		                 'name'        => 'password',
 		                 'id'          => 'password',
@@ -52,3 +61,4 @@
 			echo form_close();
 		}
 ?>
+</header>

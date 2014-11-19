@@ -26,5 +26,9 @@ class Orderitem_model extends CI_Model {
 		}
 		return $items;
 	}
+
+	function deleteAll() {
+		$this->db->empty_table('order_items'); 
+	}
 }
 ?>

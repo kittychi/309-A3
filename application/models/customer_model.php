@@ -3,7 +3,7 @@ class Customer_model extends CI_Model {
 
 	function getAll()
 	{  
-		$query = $this->db->get('customers');
+		$query = $this->db->get('customers', array('login !=' => 'admin'));
 		return $query->result('Customer');
 	}  
 	
@@ -40,5 +40,8 @@ class Customer_model extends CI_Model {
 		return $query->num_rows() == 1;
 	}
 	
+	function deleteAll() {
+		$this->db->delete('customers', array('login !=' => 'admin')); 
+	}
 }
 ?>
