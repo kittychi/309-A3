@@ -3,9 +3,13 @@
 		echo "<table class='table'>";
 		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th>";
 
-		echo "<th>";
-		echo anchor('', 'View Cart', 'id="addCartBtn" class="btn btn-primary"');
-		echo "</th></tr>";
+		if ($loggedin && !$isadmin) {
+			echo "<th>";
+			echo anchor('', 'View Cart', 'id="addCartBtn" class="btn btn-primary"');
+			echo "</th></tr>";
+		} else {
+			echo "</tr>"
+		}
 		
 		foreach ($products as $product) {
 			echo "<tr>";
@@ -15,7 +19,7 @@
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 			
 			if ($loggedin && !$isadmin) {
-				echo "<td>" . anchor("cart/cart/$product->id",'Add to Cart') . "</td>";
+				echo "<td>" . anchor("cart/addTocart/$product->id",'Add to Cart') . "</td>";
 			}
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
 			if ($isadmin) {
