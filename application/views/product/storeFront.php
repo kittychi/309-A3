@@ -1,12 +1,10 @@
 <h2>Product Table</h2>
 <?php 
 		echo "<table class='table'>";
-		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th>";
+		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th><th>Quantity</th>";
 
 		if ($loggedin && !$isadmin) {
-			echo "<th>";
-			echo anchor('store/viewCart', 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"');
-			echo "</th></tr>";
+			echo "<th>" . anchor('store/viewCart', 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"') . "</th></tr>";
 		} else {
 			echo "</tr>";
 		}
@@ -17,6 +15,22 @@
 			echo "<td>" . $product->description . "</td>";
 			echo "<td>" . $product->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
+
+			$formattr = array('class' => 'form-inline');
+			$labelattr = array('class' => 'sr-only');
+			echo form_open('store/addCart', $formattr);
+			echo form_error('quant');
+			$quant = array(
+			             'name'        => 'quant',
+			             'id'          => 'quant',
+			             'value' 		=> '1', 
+			             'required'    => 'true',
+			             'type'        => 'number',
+			             'min'			=> "1",
+			             'class'       => 'form-control'
+			           );
+			echo form_input($quant);
+			echo form_close();
 			
 			if ($loggedin && !$isadmin) {
 				echo "<td>" . anchor("store/addCart/$product->id",'Add to Cart') . "</td>";
