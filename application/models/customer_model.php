@@ -11,7 +11,12 @@ class Customer_model extends CI_Model {
 	{
 		$query = $this->db->get_where('customers',array('username' => $username));
 		
-		return $query->row(0,'Customers');
+		return $query->row(0,'Customer');
+	}
+
+	function get_cid($cid) {
+		$query = $this->db->get_where('customers', array('id' => $cid));
+		return $query->row(0, 'Customer');
 	}
 	
 	function insert($customer) {

@@ -10,7 +10,7 @@
 			echo "<td>" . $customer->email . "</td>";
 			echo "<td>" . $customer->login . "</td>";
 				
-			echo "<td>" . anchor("admin/listorderdetails/$customer->id",'View all order details') . "</td>";
+			echo "<td>" . anchor("admin/userOrdersDetails/$customer->id",'View all order details') . "</td>";
 				
 			echo "</tr>";
 		}

@@ -6,6 +6,7 @@
 			if ($isadmin) {
 				echo anchor('admin/allorders', 'List All Orders', 'id="allordersbtn" class="btn btn-primary"');
 				echo anchor('admin/allusers', 'List All Users', 'id="allusersbtn" class="btn btn-primary"');
+				echo anchor('store/newForm', 'Add new product', 'id="addproductbtn" class="btn btn-primary"'); 
 			}
 		} else {
 
