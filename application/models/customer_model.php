@@ -18,7 +18,7 @@ class Customer_model extends CI_Model {
 		return $this->db->insert("customers", array('first' => $customer->first,
 				                                  'last' => $customer->last,
 											      'login' => $customer->login,
-											      'password'=>$customer->password,
+											      'password'=> $customer->password,
 												  'email' => $customer->email));
 	}
 	 
@@ -31,8 +31,8 @@ class Customer_model extends CI_Model {
 	}
 	
 	function login($username, $password) {
-		$query = $this->db->get_where('login', $username, 'password', $password);
-
+		$query = $this->db->get_where('customers', array('login'=>$username, 'password'=> $password));
+		return $query->num_rows() == 1;
 	}
 	
 }

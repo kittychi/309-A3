@@ -1,7 +1,5 @@
 <h2>Product Table</h2>
 <?php 
-		echo "<p>" . anchor('account/registerForm', 'Register') . "</p>";
-
 		echo "<table class='table'>";
 		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th></tr>";
 		

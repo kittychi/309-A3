@@ -18,7 +18,6 @@ class Account extends CI_Controller {
 	}
 
 	function register() {
-
 		try {
 			$this->load->library('form_validation');
 
@@ -67,8 +66,39 @@ class Account extends CI_Controller {
 		log_message('debug',$e->getMessage()); // use codeigniters built in logging library
         show_error($e->getMessage()); // or echo $e->getMessage()
       }
+	}
 
+	function login() {
+		$this->load->model('customer_model');
 
+		$username =$this->input->post('username');
+		$password =$this->input->post('password');
+		$result = $this->customer_model->login($username, $password);
+
+		if($result) {
+			$sess_array = array(
+					'username' => $username,
+					'logged_in' => TRUE, 
+					);
+			$this->session->set_userdata($sess_array);
+
+		}
+		else
+		{
+			$this->form_validation->set_message('check_database', 'Invalid username or password');
+		}
+			redirect('store/index', 'refresh');
+	}
+
+	function logout() {
+		if ($this->session->userdata('logged_in')) {
+			$sess_array = array(
+					'username' => '',
+					'logged_in' => false, 
+					);
+			$this->session->set_userdata($sess_array);
+		}
+		redirect('store/index', 'refresh');
 	}
 }
 

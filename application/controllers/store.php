@@ -4,27 +4,34 @@ class Store extends CI_Controller {
      
      
     function __construct() {
-    		// Call the Controller constructor
-	    	parent::__construct();
-	    	
-	    	
-	    	$config['upload_path'] = './images/product/';
-	    	$config['allowed_types'] = 'gif|jpg|png';
-/*	    	$config['max_size'] = '100';
-	    	$config['max_width'] = '1024';
-	    	$config['max_height'] = '768';
+		// Call the Controller constructor
+    	parent::__construct();
+    	
+    	
+    	$config['upload_path'] = './images/product/';
+    	$config['allowed_types'] = 'gif|jpg|png';
+/*	    $config['max_size'] = '100';
+    	$config['max_width'] = '1024';
+    	$config['max_height'] = '768';
 */
-	    		    	
-	    	$this->load->library('upload', $config);
-	    	
+    		    	
+    	$this->load->library('upload', $config);
     }
 
     function index() {
-    		$this->load->model('product_model');
-    		$products = $this->product_model->getAll();
-    		$data['products']=$products;
-    		$this->load->view('common/scripts.html');
-    		$this->load->view('product/storeFront.php',$data);
+		$this->load->model('product_model');
+		$products = $this->product_model->getAll();
+		$data['products']=$products;
+
+		$data['loggedin'] = $this->session->userdata('logged_in');
+		$data['username'] = $this->session->userdata('username');
+
+		// $data['loggedin'] = True;
+		// $data['username'] = 'admin'; 
+
+		$this->load->view('common/scripts.html');
+		$this->load->view('common/header.php', $data);
+		$this->load->view('product/storeFront.php',$data);
     }
     
     function viewProducts() { 

@@ -48,7 +48,7 @@
   $username = array(
                'name'        => 'username',
                'id'          => 'username',
-               'placeholder' => 'Userame', 
+               'placeholder' => 'Username', 
                'required'    => 'true',
                'type'        => 'text',
                'class'       => 'form-control'
@@ -84,7 +84,6 @@
   $submit = array(
                'name'        => 'submit',
                'id'          => 'registerbtn',
-               'placeholder' => 'Confirm Password',
                'type'        => 'submit',
                'class'       => 'btn btn-lg btn-primary btn-block',
                'value'       => 'Register',
