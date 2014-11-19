@@ -5,7 +5,7 @@
 
 		if ($loggedin && !$isadmin) {
 			echo "<th>";
-			echo anchor('', 'View Cart', 'id="addCartBtn" class="btn btn-primary"');
+			echo anchor('cart/viewCart', 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"');
 			echo "</th></tr>";
 		} else {
 			echo "</tr>"
