@@ -8,7 +8,7 @@
 			echo anchor("cart/viewCart", 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"');
 			echo "</th></tr>";
 		} else {
-			echo "</tr>"
+			echo "</tr>";
 		}
 		
 		foreach ($products as $product) {
