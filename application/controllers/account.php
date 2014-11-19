@@ -82,6 +82,9 @@ class Account extends CI_Controller {
 					);
 			$this->session->set_userdata($sess_array);
 
+			if ($username=='admin') {
+				$this->session->set_userdata('isadmin', true);
+			}
 		}
 		else
 		{
@@ -95,6 +98,7 @@ class Account extends CI_Controller {
 			$sess_array = array(
 					'username' => '',
 					'logged_in' => false, 
+					'isadmin' => false,
 					);
 			$this->session->set_userdata($sess_array);
 		}

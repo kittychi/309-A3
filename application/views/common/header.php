@@ -1,6 +1,6 @@
 <?php
 		if ($loggedin) {
-			echo '<h3>Welcome ' . $username . ' ' . $loggedin . '</h3>';
+			echo '<h3>Welcome ' . $username . ' ' . $isadmin . '</h3>';
 			echo anchor('account/logout', 'Logout', 'id="logoutbtn" class="btn btn-primary"');
 
 		} else {

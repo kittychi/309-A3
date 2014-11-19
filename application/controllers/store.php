@@ -25,6 +25,7 @@ class Store extends CI_Controller {
 
 		$data['loggedin'] = $this->session->userdata('logged_in');
 		$data['username'] = $this->session->userdata('username');
+		$data['isadmin'] = $this->session->userdata('isadmin');
 
 		// $data['loggedin'] = True;
 		// $data['username'] = 'admin'; 
