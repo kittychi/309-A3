@@ -21,12 +21,14 @@ class Account extends CI_Controller {
 		try {
 			$this->load->library('form_validation');
 
+			$this->form_validation->set_message('is_unique', 'The %s is already taken');
+
 			$this->form_validation->set_rules('firstname','First Name','required');
 			$this->form_validation->set_rules('lastname','Last Name','required');
 			$this->form_validation->set_rules('username','Username','required|is_unique[customers.login]');
 			$this->form_validation->set_rules('password','Password','trim|required|matches[passwordconf]');
 			$this->form_validation->set_rules('passwordconf', 'Confirm Password', 'trim|required');
-			$this->form_validation->set_rules('email','E-mail','required|valid_email');
+			$this->form_validation->set_rules('email','E-mail','required|valid_email|is_unique[customers.email]');
 
 			$password = $this->input->get_post('password');
 			$passwordconf = $this->input->get_post('passwordconf');
