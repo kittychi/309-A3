@@ -139,6 +139,9 @@ class Store extends CI_Controller {
    	}
     
     function addCart($product){
+    	$this->load->model('product_model');
+		$product = $this->product_model->get($id);
+
     	session_start();
 		
 		if (!isset($_SESSION['Cart'])) {
