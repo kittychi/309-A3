@@ -25,9 +25,9 @@ class Account extends CI_Controller {
 
 			$this->form_validation->set_rules('firstname','First Name','required');
 			$this->form_validation->set_rules('lastname','Last Name','required');
-			$this->form_validation->set_rules('username','Username','required|is_unique[customers.login]');
-			$this->form_validation->set_rules('password','Password','trim|required|matches[passwordconf]');
-			$this->form_validation->set_rules('passwordconf', 'Confirm Password', 'trim|required');
+			$this->form_validation->set_rules('username','Username','required|is_unique[customers.login]|alpha_numeric');
+			$this->form_validation->set_rules('password','Password','trim|required|matches[passwordconf]|alpha_numeric');
+			$this->form_validation->set_rules('passwordconf', 'Confirm Password', 'trim|required|alpha_numeric');
 			$this->form_validation->set_rules('email','E-mail','required|valid_email|is_unique[customers.email]');
 
 			$password = $this->input->get_post('password');
