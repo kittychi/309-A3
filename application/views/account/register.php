@@ -12,7 +12,6 @@
   $firstname = array(
                'name'        => 'firstname',
                'id'          => 'firstname',
-               'class'       => 'form-control',
                'placeholder' => 'First Name', 
                'required'    => 'true',
                'type'        => 'text',
@@ -25,7 +24,6 @@
   $lastname = array(
                'name'        => 'lastname',
                'id'          => 'lastname',
-               'class'       => 'form-control',
                'placeholder' => 'last Name', 
                'required'    => 'true',
                'type'        => 'text',
@@ -38,7 +36,6 @@
   $email = array(
                'name'        => 'email',
                'id'          => 'email',
-               'class'       => 'form-control',
                'placeholder' => 'E-mail', 
                'required'    => 'true',
                'type'        => 'email',
@@ -51,7 +48,6 @@
   $username = array(
                'name'        => 'username',
                'id'          => 'username',
-               'class'       => 'form-control',
                'placeholder' => 'Userame', 
                'required'    => 'true',
                'type'        => 'text',
@@ -64,10 +60,8 @@
   $password = array(
                'name'        => 'password',
                'id'          => 'password',
-               'class'       => 'form-control',
                'placeholder' => 'Password', 
                'required'    => 'true',
-               'type'        => 'password',
                'class'       => 'form-control'
              );
   echo form_password($password);
@@ -77,17 +71,14 @@
   $passwordconf = array(
                'name'        => 'passwordconf',
                'id'          => 'passwordconf',
-               'class'       => 'form-control',
                'placeholder' => 'Confirm Password', 
                'required'    => 'true',
-               'type'        => 'password',
                'class'       => 'form-control'
              );
-  echo form_password($password);
+  echo form_password($passwordconf);
 
   if(isset($fileerror))
     echo $fileerror;
-
 
 // <input name="submit" type="submit" value="Register" abp="15">
   $submit = array(

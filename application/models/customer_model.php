@@ -1,5 +1,5 @@
 <?php
-class Product_model extends CI_Model {
+class Customer_model extends CI_Model {
 
 	function getAll()
 	{  
@@ -15,16 +15,18 @@ class Product_model extends CI_Model {
 	}
 	
 	function insert($customer) {
-		return $this->db->insert("customers", array('firstname' => $customer->firstname,
-				                                  'lastname' => $customer->lastname,
+		return $this->db->insert("customers", array('first' => $customer->first,
+				                                  'last' => $customer->last,
 											      'login' => $customer->login,
+											      'password'=>$customer->password,
 												  'email' => $customer->email));
 	}
 	 
 	function update($customer) {
 		$this->db->where('login', $customer->login);
-		return $this->db->update("customers", array('firstname' => $customer->firstname,
-				                                  'lastname' => $customer->lastname,
+		return $this->db->update("customers", array('first' => $customer->first,
+				                                  'last' => $customer->last,
+				                                  'password' => $customer->password,
 											      'email' => $customer->email));
 	}
 	

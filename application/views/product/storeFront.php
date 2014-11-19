@@ -16,5 +16,5 @@
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
 			echo "</tr>";
 		}
-		echo "<table>";
+		echo "</table>";
 ?>
