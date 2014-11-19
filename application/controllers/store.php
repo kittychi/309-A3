@@ -142,7 +142,7 @@ class Store extends CI_Controller {
     	session_start();
 		
 		if (!isset($_SESSION['Cart'])) {
-			$_SESSION['Cart'] = array()
+			$_SESSION['Cart'] = array();
 		}
 
 		array_push($_SESSION['Cart'], $product);
