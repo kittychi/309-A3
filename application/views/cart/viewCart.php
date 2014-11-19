@@ -7,7 +7,7 @@
 		echo "<p> Your Cart is Empty </p>";
 	} else {
 		echo "<table class='table'>";
-		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th>";
+		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th></tr>";
 		foreach ($_SESSION['Cart'] as $product) {
 			echo "<tr>";
 			echo "<td>" . $product->name . "</td>";
