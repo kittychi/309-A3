@@ -16,6 +16,7 @@
 			echo "<td>" . $product->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 
+			echo "<td>"
 			$formattr = array('class' => 'form-inline');
 			$labelattr = array('class' => 'sr-only');
 			echo form_open('store/addCart', $formattr);
@@ -31,6 +32,7 @@
 			           );
 			echo form_input($quant);
 			echo form_close();
+			echo "</td>"; 
 			
 			if ($loggedin && !$isadmin) {
 				echo "<td>" . anchor("store/addCart/$product->id",'Add to Cart') . "</td>";
