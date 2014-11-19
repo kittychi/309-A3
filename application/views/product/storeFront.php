@@ -5,7 +5,7 @@
 
 		if ($loggedin && !$isadmin) {
 			echo "<th>";
-			echo anchor("cart/viewCart", 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"');
+			echo anchor('store/viewCart', 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"');
 			echo "</th></tr>";
 		} else {
 			echo "</tr>";
@@ -19,7 +19,7 @@
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 			
 			if ($loggedin && !$isadmin) {
-				echo "<td>" . anchor("cart/addTocart/$product->id",'Add to Cart') . "</td>";
+				echo "<td>" . anchor("store/addTocart/$product",'Add to Cart') . "</td>";
 			}
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
 			if ($isadmin) {

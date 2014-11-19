@@ -134,9 +134,19 @@ class Store extends CI_Controller {
 		redirect('store/index', 'refresh');
 	}
       
-   
+   	function viewCart(){
+   		$this->load->view('cart/viewCart.php');
+   	}
     
-    
+    function addCart($product){
+    	session_start();
+		
+		if (!isset($_SESSION['Cart'])) {
+			$_SESSION['Cart'] = array()
+		}
+
+		array_push($_SESSION['Cart'], $product);
+    }
     
 }
 
