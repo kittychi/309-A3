@@ -11,7 +11,7 @@
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 			
 			if ($loggedin && !$isadmin) {
-				echo "<td>" . anchor("",'Add to Cart') . "</td>";
+				echo "<td>" . anchor("store/cart/$product->id",'Add to Cart') . "</td>";
 			}
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
 			if ($isadmin) {
