@@ -25,9 +25,7 @@
 			             'value' 		=> '1', 
 			             'required'    => 'true',
 			             'type'        => 'number',
-			             'min'			=> "1",
-			             'class'       => 'form-control',
-			             'size'			=> "3"
+			             'min'			=> "1"
 			           );
 			echo form_input($quant);
 			echo form_close();
