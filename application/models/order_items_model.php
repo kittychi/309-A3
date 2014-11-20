@@ -19,16 +19,16 @@ class Order_items_model extends CI_Model {
 	}
 	
 	function insert($order_items) {
-		return $this->db->insert("order_items", array('order_id' => $product->order_id,
-				                                  'product_id' => $product->product_id,
-												  'quantity' => $product->quantity));
+		return $this->db->insert("order_items", array('order_id' => $order_items->order_id,
+				                                  'product_id' => $order_items->product_id,
+												  'quantity' => $order_items->quantity));
 	}
 	 
 	function update($order_items) {
 		$this->db->where('id', $order_items->id);
-		return $this->db->update("order_items", array('order_id' => $product->order_id,
-				                                  'product_id' => $product->product_id,
-												  'quantity' => $product->quantity));
+		return $this->db->update("order_items", array('order_id' => $order_items->order_id,
+				                                  'product_id' => $order_items->product_id,
+												  'quantity' => $order_items->quantity));
 	}
 }
 ?>
