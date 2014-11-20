@@ -257,7 +257,7 @@ class Store extends CI_Controller {
 					$Msg += $product->name . "\t" . $product->price . "\t" . $order->quantity . "\n";
 				}
 				$Msg += "Total Price: " . $total;
-				echo "<p>" . $Msg . "</p>"
+				echo "<p>" . $Msg . "</p>";
 				// Pear Mail Library
 				include_once "Mail.php";
 
