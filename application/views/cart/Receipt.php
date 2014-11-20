@@ -11,9 +11,10 @@
 	$Items = $this->order_items_model->getAllfromOrder($order_id);
 
 	$this->load->model('product_model');
-	
+
 	foreach($Items as $order){
-		$product = $this->product_model->get($order->product_id);
+		$prod_id = $order->product_id;
+		$product = $this->product_model->get($prod_id);
 		echo "<tr><td>" . $product->name . "</td><td>" . $product->price . "</td><td>" . $order->quantity . "</td></tr>";
 	}
 
