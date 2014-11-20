@@ -149,6 +149,7 @@ class Store extends CI_Controller {
 		}
 
 		array_push($_SESSION['Cart'], $product);
+		viewCart()
     }
     
 }
