@@ -276,8 +276,8 @@ class Store extends CI_Controller {
 				        'host' => 'ssl://smtp.mail.yahoo.com',
 				        'port' => '465',
 				        'auth' => true,
-				        'username' => "jonnu1818@yahoo.ca",
-				        'password' => "jasonm13"
+				        'username' => "email@domain",
+				        'password' => ""
 				    ));
 
 				$mail = @$smtp->send($to, $headers, $body);
