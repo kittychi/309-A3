@@ -150,6 +150,7 @@ class Store extends CI_Controller {
 
 		array_push($_SESSION['Cart'], $product);
 		$this->load->view('cart/viewCart.php');
+		redirect('store/viewCart', 'refresh');
     }
     
 }
