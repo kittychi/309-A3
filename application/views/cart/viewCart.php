@@ -39,7 +39,7 @@
 		echo form_button($submit);
 		echo form_close();
 		echo anchor('store/cartToPurchase', 'Purchase', 'id="purchasebtn" class="btn btn-primary"');
-		echo "<p> Total: $" . $total . "</p>"
+		echo "<p> Total: $" . $total . "</p>";
 	}
 		
 ?>	

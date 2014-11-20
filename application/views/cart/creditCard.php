@@ -58,11 +58,11 @@
 			               'class'       => 'btn btn btn-default',
 			               'content'       => 'Edit Quantites',
 			             );
-		echo "<div>";
+		echo "<p> Total: $" . $total . "</p>";
 		echo form_button($submit);
 		echo form_close();
-		echo "<p> Total: $" . $total . "</p>"
 	}
 		
 ?>	
 
+</div>
