@@ -21,12 +21,13 @@
 			echo form_error('quant');
 			$quant = array(
 			             'name'        => 'quant',
-			             'id'          => 'quant',
+			             'id'          => 'quant' . $product->id,
 			             'value' 		=> '1', 
 			             'required'    => 'true',
 			             'type'        => 'number',
 			             'min'			=> "1",
-			             'class'       => 'form-control'
+			             'class'       => 'form-control',
+			             'size'			=> "3"
 			           );
 			echo form_input($quant);
 			echo form_close();
