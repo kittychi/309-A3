@@ -1,9 +1,10 @@
 <h2>Product Table</h2>
 <?php 
 		echo "<table class='table'>";
-		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th><th>Quantity</th>";
+		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th>";
 
 		if ($loggedin && !$isadmin) {
+			echo "<th>Quantity</th>";
 			echo "<th>" . anchor('store/viewCart', 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"') . "</th></tr>";
 		} else {
 			echo "</tr>";
@@ -15,23 +16,33 @@
 			echo "<td>" . $product->description . "</td>";
 			echo "<td>" . $product->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
-
-			echo "<td>";
-			echo form_open('store/addCart');
-			echo form_error('quant');
-			$quant = array(
-			             'name'        => 'quant' . $product->id,
-			             'value' 		=> '1', 
-			             'required'    => 'true',
-			             'type'        => 'number',
-			             'min'			=> "1"
-			           );
-			echo form_input($quant);
-			echo form_close();
-			echo "</td>"; 
 			
 			if ($loggedin && !$isadmin) {
-				echo "<td>" . anchor("store/addCart/$product->id",'Add to Cart') . "</td>";
+				echo "<td>";
+				echo form_open('store/addCart/$product->id');
+				echo form_error('quant');
+				$quant = array(
+				             'name'        => 'quant' . $product->id,
+				             'value' 		=> '1', 
+				             'required'    => 'true',
+				             'type'        => 'number',
+				             'min'			=> "1"
+				           );
+				echo form_input($quant);
+				echo form_close();
+				echo "</td>"; 
+
+				echo "<td>";
+				$submit = array(
+	               'name'        => 'AddCart',
+	               'id'          => 'AddCartbtn',
+	               'type'        => 'submit',
+	               'class'       => 'btn btn btn-default',
+	               'content'       => 'Add to Cart',
+	             );
+	
+	  			echo form_button($submit);
+				echo "</td>";
 			}
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
 			if ($isadmin) {
