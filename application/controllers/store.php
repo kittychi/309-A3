@@ -258,27 +258,35 @@ class Store extends CI_Controller {
 				}
 				$Msg += "Total Price: " . $total;
 
-				$config = Array(
-				    'protocol' => 'smtp',
-				    'smtp_host' => 'ssl://smtp.googlemail.com',
-				    'smtp_port' => 465,
-				    'smtp_user' => 'jonnu1818@gmail.com',
-				    'smtp_pass' => 'jasonm13',
-				    'mailtype'  => 'html', 
-				    'charset'   => 'iso-8859-1'
+				// Pear Mail Library
+				require_once "Mail.php";
+
+				$from = '<jonnu1818@gmail.com>';
+				$to = '<' . $customer->email . '>';
+				$subject = 'Card Shop';
+				$body = $Msg;
+
+				$headers = array(
+				    'From' => $from,
+				    'To' => $to,
+				    'Subject' => $subject
 				);
-				$this->load->library('email', $config);
-				$this->email->set_newline("\r\n");
 
-				$this->email->from('jonnu1818@gmail.com', 'Me');
-		        $this->email->to($customer->email); 
+				$smtp = Mail::factory('smtp', array(
+				        'host' => 'ssl://smtp.gmail.com',
+				        'port' => '465',
+				        'auth' => true,
+				        'username' => 'jonnu1818@gmail.com',
+				        'password' => 'jasonm13'
+				    ));
 
-		        $this->email->subject('Card Shop');
-		        $this->email->message($Msg); 
+				$mail = $smtp->send($to, $headers, $body);
 
-				// Set to, from, message, etc.
-
-				$result = $this->email->send();
+				if (PEAR::isError($mail)) {
+				    echo('<p>' . $mail->getMessage() . '</p>');
+				} else {
+				    echo('<p>Message successfully sent!</p>');
+				}
     			
 
     			$this->load->view('cart/Receipt.php', $data);
