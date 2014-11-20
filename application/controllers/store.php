@@ -273,7 +273,7 @@ class Store extends CI_Controller {
 				);
 
 				$smtp = Mail::factory('smtp', array(
-				        'host' => 'ssl://smtp.gmail.com',
+				        'host' => 'smtp.gmail.com',
 				        'port' => '465',
 				        'auth' => true,
 				        'username' => 'jonnu1818@gmail.com',
