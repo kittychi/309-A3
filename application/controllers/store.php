@@ -165,8 +165,8 @@ class Store extends CI_Controller {
 }
 
 class Cart_item {
-	public prod;
-	public quant;
+	public $prod;
+	public $quant;
 }
 
 ?>

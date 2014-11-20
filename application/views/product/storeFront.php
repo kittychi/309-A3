@@ -29,19 +29,19 @@
 				             'min'			=> "1"
 				           );
 				echo form_input($quant);
-				echo form_close();
 				echo "</td>"; 
 
 				echo "<td>";
 				$submit = array(
-	               'name'        => 'AddCart',
-	               'id'          => 'AddCartbtn',
-	               'type'        => 'submit',
-	               'class'       => 'btn btn btn-default',
-	               'content'       => 'Add to Cart',
-	             );
+			               'name'        => 'AddCart',
+			               'id'          => 'AddCartbtn',
+			               'type'        => 'submit',
+			               'class'       => 'btn btn btn-default',
+			               'content'       => 'Add to Cart',
+			             );
 	
 	  			echo form_button($submit);
+	  			echo form_close();
 				echo "</td>";
 			}
 			echo "<td>" . anchor("store/read/$product->id",'View') . "</td>";
