@@ -247,9 +247,8 @@ class Store extends CI_Controller {
     			$this->load->model('product_model');
     			$data['order_id'] = $orders->id;
     			$data['total'] = $total;
-    			$data['email'] = $customer->email;
 
-    			$Items = $this->order_items_model->getAllfromOrder($order_id);
+    			$Items = $this->order_items_model->getAllfromOrder($data['order_id']);
 				$Msg = "";
 
 				foreach($Items as $order){
@@ -257,6 +256,7 @@ class Store extends CI_Controller {
 					$product = $this->product_model->get($prod_id);
 					$Msg += $product->name . "\t" . $product->price . "\t" . $order->quantity . "\n";
 				}
+				$Msg += "Total Price: " . $total;
 
 
     			$this->load->library('email');
@@ -269,7 +269,7 @@ class Store extends CI_Controller {
 				$this->email->initialize($config);
 
 				$this->email->from('jonnu1818@gmail.com', 'g2harrit');
-				$this->email->to($email); 
+				$this->email->to($customer->email); 
 
 				$this->email->subject('Car Shop Receipt');
 				$this->email->message($Msg);	

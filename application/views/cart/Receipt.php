@@ -8,13 +8,11 @@
 	;
 
 	$Items = $this->order_items_model->getAllfromOrder($order_id);
-	$Msg = "";
-
+	
 	foreach($Items as $order){
 		$prod_id = $order->product_id;
 		$product = $this->product_model->get($prod_id);
 		echo "<tr><td>" . $product->name . "</td><td>" . $product->price . "</td><td>" . $order->quantity . "</td></tr>";
-		$Msg += $product->name . "\t" . $product->price . "\t" . $order->quantity . "\n";
 	}
 
 	echo "<tr><td> Total Price: </td><td>" . $total . "</td></tr>";
