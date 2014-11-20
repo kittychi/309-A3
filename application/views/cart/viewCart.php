@@ -16,7 +16,7 @@
 			echo "<td>" . $Cart->prod->description . "</td>";
 			echo "<td>" . $Cart->prod->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $Cart->prod->photo_url . "' width='100px' /></td>";
-			$cid = $Cart->prod->id
+			$cid = $Cart->prod->id;
 			$quantbtn = array(
 				             'name'        => 'quant' . $cid,
 				             'value' 		=> $Cart->quant, 
