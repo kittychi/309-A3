@@ -259,22 +259,47 @@ class Store extends CI_Controller {
 				$Msg += "Total Price: " . $total;
 
 
-    			$this->load->library('email');
+    			require_once('class.phpmailer.php');
+				//include("class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
 
-    			$config['protocol'] = 'sendmail';
-				$config['mailpath'] = '/usr/sbin/sendmail';
-				$config['charset'] = 'iso-8859-1';
-				$config['wordwrap'] = TRUE;
+				$mail             = new PHPMailer();
 
-				$this->email->initialize($config);
+				$body             = $Msg;
+				//$body             = eregi_replace("[\]",'',$body);
 
-				$this->email->from('jonnu1818@gmail.com', 'g2harrit');
-				$this->email->to($customer->email); 
+				$mail->IsSMTP(); // telling the class to use SMTP
+				$mail->Host       = "ssl://smtp.gmail.com"; // SMTP server
+				$mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
+				                                           // 1 = errors and messages
+				                                           // 2 = messages only
+				$mail->SMTPAuth   = true;                  // enable SMTP authentication
+				$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+				$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
+				$mail->Port       = 465;                   // set the SMTP port for the GMAIL server
+				$mail->Username   = "jonnu1818@gmail.com";  // GMAIL username
+				$mail->Password   = "jasonm13";            // GMAIL password
 
-				$this->email->subject('Car Shop Receipt');
-				$this->email->message($Msg);	
+				$mail->SetFrom('contact@prsps.in', 'PRSPS');
 
-				$this->email->send();
+				//$mail->AddReplyTo("user2@gmail.com', 'First Last");
+
+				$mail->Subject    = "Card Shop";
+
+				//$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+
+				$mail->MsgHTML($body);
+
+				$address = $customer->email;
+				$mail->AddAddress($address, "user2");
+
+				//$mail->AddAttachment("images/phpmailer.gif");      // attachment
+				//$mail->AddAttachment("images/phpmailer_mini.gif"); // attachment
+
+				if(!$mail->Send()) {
+				  echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+				  echo "Message sent!";
+				}
 
 				#echo $this->email->print_debugger();
 
