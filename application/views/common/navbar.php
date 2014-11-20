@@ -30,9 +30,11 @@
 			
 		<?php
 		} else {
-
-			// echo $username;
-
+			?>
+			<ul class='nav navbar-nav'>
+				<li><?php echo anchor('store/index', 'Products', 'id="products"'); ?></li>
+			</ul>
+			<?php
 			$formattr = array('class' => 'form-inline navbar-form navbar-right');
 			$labelattr = array('class' => 'sr-only');
 			echo form_open('account/login', $formattr); ?>
@@ -61,7 +63,6 @@
 		                 'class'       => 'form-control'
 		               );
 		    echo form_password($password);
-		    // echo '<button type="submit" class="btn btn-default">Sign in</button>';
 			?>
 			</div>
 			<?php
