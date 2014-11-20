@@ -24,6 +24,7 @@
 				             'min'			=> "1"
 				           );
 			echo "<td>". form_input($quantbtn) . "</td>";
+			echo "<td>" . anchor("store/rmCart/$Cart->prod->id",'Delete') . "</td>";
 			echo "</tr>";
 			$total += $Cart->prod->price * $Cart->quant;
 		}

@@ -170,6 +170,13 @@ class Store extends CI_Controller {
     	}
     	redirect('store/viewCart', 'refresh');
     }
+
+    function rmCart($id){
+
+    	session_start();
+    	unset($_SESSION['Cart'][$id]);
+    	redirect('store/viewCart', 'refresh');
+    }
     
     function cartToPurchase(){
     	$this->load->view('common/scripts.html');
