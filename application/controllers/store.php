@@ -219,6 +219,8 @@ class Store extends CI_Controller {
 			    $this->orders_model->insert($orders);
 			    
 			    $orders = $this->orders_model->get($customer->id, $cdate, $ctime);
+			    echo "<p>" . $orders->id . "</p>"
+			    sleep(10000);
 			    $this->load->model('order_items_model');
 			    foreach ($_SESSION['Cart'] as $Cart) {
 
