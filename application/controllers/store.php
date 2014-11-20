@@ -249,7 +249,7 @@ class Store extends CI_Controller {
     			$data['total'] = $total;
 
     			$Items = $this->order_items_model->getAllfromOrder($data['order_id']);
-				$Msg = "";
+				$Msg = "Name\t Price\t Quantity \n";
 
 				foreach($Items as $order){
 					$prod_id = $order->product_id;
