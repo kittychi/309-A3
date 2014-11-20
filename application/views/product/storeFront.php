@@ -16,7 +16,7 @@
 			echo "<td>" . $product->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 
-			echo "<td>"
+			echo "<td>";
 			echo form_open('store/addCart');
 			echo form_error('quant');
 			$quant = array(
