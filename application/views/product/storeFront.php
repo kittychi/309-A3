@@ -21,6 +21,7 @@
 					<div class='form-group'>
 					<?php
 					echo form_label('Quantity') ;
+					echo form_error('quant');
 					$quant = array(
 					             'name'        => 'quant' . $product->id,
 					             'value' 		=> '1', 

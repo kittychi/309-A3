@@ -199,19 +199,17 @@ class Store extends CI_Controller {
     	$month = $this->input->post("CCmonth");
     	$year = $this->input->post("CCyear");
 
-    	$CurMonth = intval(date("m"), 10);
-    	$CurYear = intval(date("Y"), 10);
+    	$this->load->library('form_validation');
+		$this->form_validation->set_rules('CCnumber', 'Credit Card Number', 'trim|required|numeric|xss_clean');
+		$this->form_validation->set_rules('CCmonth', 'Month', 'trim|required|numeric|xss_clean|callback_check_expiry');
+		$this->form_validation->set_rules('CCyear', 'Year', 'trim|required|numeric|xss_clean');
+ 
+    	if (!$this->form_validation->run()) {
+    		$data['view'] = 'cart/creditCard.php';
+			$data['viewdata'] = '';
+			$this->load->view('common/template.php', $data);
 
-    	if ($CurYear > $year) {
-    		# invalid year
-
-    		$this->load->view('cart/creditCard.php');
-
-    	} elseif ($CurYear == $year && $CurMonth >= $month) {
-    		# invalid month
-
-    		$this->load->view('cart/creditCard.php');
-    	} else {
+    	} else{
     		#valid start checkout
     		
     		session_start();
@@ -269,42 +267,67 @@ class Store extends CI_Controller {
 				}
 				$Msg = $Msg . "Total Price: " . $total;
 
-				// // Pear Mail Library
-				// include_once "Mail.php";
+				// Pear Mail Library
+				include_once "Mail.php";
 
-				// $from = "email@domain";
-				// $to = $customer->email;
-				// $subject = "Card Shop";
-				// $body = $Msg;
+				$from = "email@domain"; // this should be changed the email that you wish to send the receipt from 
+				$to = $customer->email;
+				$subject = "Card Shop";
+				$body = $Msg;
 
-				// $headers = array(
-				//     'From' => $from,
-				//     'To' => $to,
-				//     'Subject' => $subject
-				// );
+				$headers = array(
+				    'From' => $from,
+				    'To' => $to,
+				    'Subject' => $subject
+				);
 
-				// $smtp = @Mail::factory('smtp', array(
-				//         'host' => 'ssl://smtp.mail.yahoo.com',
-				//         'port' => '465',
-				//         'auth' => true,
-				//         'username' => "email@domain",
-				//         'password' => ""
-				//     ));
+				// the following needs to be changed to whatever email smtp you're using
+				$smtp = @Mail::factory('smtp', array(
+				        'host' => 'ssl://smtp.mail.yahoo.com', 
+				        'port' => '465',
+				        'auth' => true,
+				        'username' => "email@domain",
+				        'password' => ""
+				    ));
 
-				// $mail = @$smtp->send($to, $headers, $body);
+				$mail = @$smtp->send($to, $headers, $body);
 
-				// if (PEAR::isError($mail)) {
-				//     echo('<p>' . $mail->getMessage() . '</p>');
-				// } else {
-				//     echo('<p>Message successfully sent!</p>');
-				// }
-				
+				if (PEAR::isError($mail)) {
+				    echo('<p>' . $mail->getMessage() . '</p>');
+				} else {
+				    echo('<p>Message successfully sent!</p>');
+				}
+
     			$data['view'] = 'cart/Receipt.php';
     			$data['viewdata'] = $viewdata;
     			$this->load->view('common/template', $data);
     	}
     }
+
+    function check_expiry($month) {
+
+    	$year = $this->input->post("CCyear");
+
+    	$CurMonth = intval(date("m"), 10);
+    	$CurYear = intval(date("Y"), 10);
+
+
+    	if ($CurYear > $year) {
+    		# invalid year
+    		$this->form_validation->set_message('check_expiry', 'Invalid year');
+    		return false; 
+
+    	} elseif ($CurYear == $year && $CurMonth >= $month) {
+    		# invalid month
+    		$this->form_validation->set_message('check_expiry', 'Invalid month');
+    		return false;
+    	} else {
+    		return true; 
+    	}
+    }
 }
+
+
 
 class Cart_item {
 	public $prod;

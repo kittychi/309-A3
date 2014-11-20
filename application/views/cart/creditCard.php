@@ -16,7 +16,7 @@
 		}
 
 		echo form_label('Credit Card Number');
-		echo form_error('creditcard_number');
+		echo form_error('CCnumber');
 		$CCnumber = array(
 	             'name'        => 'CCnumber', 
 	             'id'          => 'CCnumber',
@@ -29,7 +29,7 @@
 		echo form_input($CCnumber);
 
 		echo form_label('Expire Date');
-		echo form_error('creditcard_month');
+		echo form_error('CCmonth');
 		$CCmonth = array(
 	             'name'        => 'CCmonth', 
 	             'id'          => 'CCmonth',
@@ -41,7 +41,7 @@
 	           );
 		echo form_input($CCmonth);
 
-		echo form_error('creditcard_year');
+		echo form_error('CCyear');
 		$CCyear = array(
 	             'name'        => 'CCyear', 
 	             'id'          => 'CCyear',
