@@ -166,7 +166,7 @@ class Store extends CI_Controller {
 
     	session_start();
     	foreach ($_SESSION['Cart'] as $Cart) {
-    		$Cart->quant = $this->input->post("quant" . $Cart->prod->id)
+    		$Cart->quant = $this->input->post("quant" . $Cart->prod->id);
     	}
     	redirect('store/viewCart', 'refresh');
     }
