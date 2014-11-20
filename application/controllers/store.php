@@ -246,8 +246,39 @@ class Store extends CI_Controller {
 
     			$this->load->model('product_model');
     			$data['order_id'] = $orders->id;
-    			$this->load->view('cart/Receipt.php', $data);
+    			$data['total'] = $total;
+    			$data['email'] = $customer->email;
 
+    			$Items = $this->order_items_model->getAllfromOrder($order_id);
+				$Msg = "";
+
+				foreach($Items as $order){
+					$prod_id = $order->product_id;
+					$product = $this->product_model->get($prod_id);
+					$Msg += $product->name . "\t" . $product->price . "\t" . $order->quantity . "\n";
+				}
+
+
+    			$this->load->library('email');
+
+    			$config['protocol'] = 'sendmail';
+				$config['mailpath'] = '/usr/sbin/sendmail';
+				$config['charset'] = 'iso-8859-1';
+				$config['wordwrap'] = TRUE;
+
+				$this->email->initialize($config);
+
+				$this->email->from('jonnu1818@gmail.com', 'g2harrit');
+				$this->email->to($email); 
+
+				$this->email->subject('Car Shop Receipt');
+				$this->email->message($Msg);	
+
+				$this->email->send();
+
+				#echo $this->email->print_debugger();
+
+    			$this->load->view('cart/Receipt.php', $data);
     	}
 
 
