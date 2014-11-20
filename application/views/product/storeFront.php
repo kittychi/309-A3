@@ -20,7 +20,6 @@
 			if ($loggedin && !$isadmin) {
 				echo "<td>";
 				echo form_open("store/addCart/$product->id");
-				echo form_error('quant');
 				$quant = array(
 				             'name'        => 'quant' . $product->id,
 				             'value' 		=> '1', 

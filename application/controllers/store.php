@@ -171,6 +171,119 @@ class Store extends CI_Controller {
     	$this->load->view('common/scripts.html');
    		$this->load->view('cart/creditCard.php');
     }
+
+    function CheckCredit(){
+    	$num = $this->input->post("CCnumber");
+    	$month = $this->input->post("CCmonth");
+    	$year = $this->input->post("CCyear");
+
+    	$CurMonth = intval(date("m"), 10);
+    	$CurYear = intval(date("y"), 10);
+
+    	if ($CurYear > $year) {
+    		# invalid year
+
+    		$this->load->view('cart/creditCard.php');
+
+    	} elseif ($CurYear == $year && $CurMonth >= $month) {
+    		# invalid month
+
+    		$this->load->view('cart/creditCard.php');
+    	} else {
+    		#valid start checkout
+
+    		session_start();
+    		$total = 0;
+			foreach ($_SESSION['Cart'] as $Cart) {
+				$total += $Cart->prod->price * $Cart->quant;
+			}
+
+    		$this->load->library('form_validation');
+    		# create orders
+    		$this->form_validation->set_rules('order_date','Date');
+    		$this->form_validation->set_rules('order_time','Time');
+    		$this->form_validation->set_rules('total','Total','decimal');
+    		$this->form_validation->set_rules('creditcard_number','CC number','numeric|exact_length[16]');
+    		$this->form_validation->set_rules('creditcard_month','CC month','greater_than[0]|less_than[13]');
+    		$this->form_validation->set_rules('creditcard_year','CC year','greater_than[2013]');
+
+    		if ($this->form_validation->run() == true) {
+				$this->load->model('customer_model');
+				$customer = $this->customer_model->get($this->session->userdata('username'));
+
+				$cdate = date("Y-m-d");
+				$ctime = date("H:i:s");
+
+				$orders = new Orders();
+				$orders->customer_id = $customer->id;
+		        $orders->order_date = $cdate;
+		        $orders->order_time = $ctime;
+		        $orders->total = $total;
+		        $orders->creditcard_number = $num;
+		        $orders->creditcard_month = $month;
+			    $orders->creditcard_year = $year;
+
+			    $this->load->model('orders_model');
+			    $this->orders_model->insert($orders);
+			    $orders = $this->orders_model->get($customer->id, $cdate, $ctime);
+
+			    $this->load->model('order_items_model');
+			    foreach ($_SESSION['Cart'] as $Cart) {
+
+			    	$order_items = new Order_items();
+			    	$order_items = $orders->id;
+			    	$order_items = $Cart->prod->id;
+			    	$order_items = $Cart->quant;
+
+			    	$this->order_items_model->insert($order_items);
+    			}
+
+    			session_unset();
+    			session_destroy();
+			} else {
+
+				redirect('store/index', 'refresh');
+			}
+
+    	}
+
+
+    }
+
+    function makeO_item(){
+    	$this->load->library('form_validation');
+		$this->form_validation->set_rules('name','Name','required|is_unique[products.name]');
+		$this->form_validation->set_rules('description','Description','required');
+		$this->form_validation->set_rules('price','Price','required');
+		
+		$fileUploadSuccess = $this->upload->do_upload();
+		
+		if ($this->form_validation->run() == true && $fileUploadSuccess) {
+			$this->load->model('product_model');
+
+			$product = new Product();
+			$product->name = $this->input->get_post('name');
+			$product->description = $this->input->get_post('description');
+			$product->price = $this->input->get_post('price');
+			
+			$data = $this->upload->data();
+			$product->photo_url = $data['file_name'];
+			
+			$this->product_model->insert($product);
+
+			//Then we redirect to the index page again
+			redirect('store/index', 'refresh');
+		}
+		else {
+			if ( !$fileUploadSuccess) {
+				$data['fileerror'] = $this->upload->display_errors();
+				$this->load->view('product/newForm.php',$data);
+				return;
+			}
+			
+			$this->load->view('product/newForm.php');
+		}	
+    }
 }
 
 class Cart_item {

@@ -10,14 +10,14 @@
 	if (!isset($_SESSION['Cart']) || count($_SESSION['Cart']) <= 0) {
 		echo "<p> Your Cart is Empty </p>";
 	} else {
-		echo form_open("");
+		echo form_open("store/CheckCredit");
 		$total = 0;
 		foreach ($_SESSION['Cart'] as $Cart) {
 			$total += $Cart->prod->price * $Cart->quant;
 		}
 
 		echo form_label('Credit Card Number');
-		echo form_error('CCnumber');
+		echo form_error('creditcard_number');
 		$CCnumber = array(
 	             'name'        => 'CCnumber', 
 	             'id'          => 'CCnumber',
@@ -30,7 +30,7 @@
 		echo form_input($CCnumber);
 
 		echo form_label('Expire Date');
-		echo form_error('CCmonth');
+		echo form_error('creditcard_month');
 		$CCmonth = array(
 	             'name'        => 'CCmonth', 
 	             'id'          => 'CCmonth',
@@ -42,7 +42,7 @@
 	           );
 		echo form_input($CCmonth);
 
-		echo form_error('CCyear');
+		echo form_error('creditcard_year');
 		$CCyear = array(
 	             'name'        => 'CCyear', 
 	             'id'          => 'CCyear',
