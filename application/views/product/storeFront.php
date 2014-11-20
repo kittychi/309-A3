@@ -1,4 +1,5 @@
 <h2>Product Table</h2>
+
 <div class='row'>
 <?php 	
 	// echo "<table class='table'>";
@@ -14,7 +15,34 @@
 	        <p>
 	        	<?php 
 	        	if ($loggedin && !$isadmin) {
-					echo anchor("",'Add to Cart', "class='btn btn-primary'");
+	        		$formattr = array('role' => 'form', 'class' => 'form-horizontal');	
+					echo form_open("store/addCart/$product->id", $formattr);
+					?>
+					<div class='form-group'>
+					<?php
+					echo form_label('Quantity') ;
+					$quant = array(
+					             'name'        => 'quant' . $product->id,
+					             'value' 		=> '1', 
+					             'required'    => 'true',
+					             'type'        => 'number',
+					             'class'	=> 'form-control',
+					             'min'			=> "1"
+					           );
+					echo form_input($quant);
+					?>
+					</div>
+					<?php
+					$submit = array(
+				               'name'        => 'AddCart',
+				               'id'          => 'AddCartbtn',
+				               'type'        => 'submit',
+				               'class'       => 'btn btn btn-primary',
+				               'content'       => 'Add to Cart',
+				             );
+	
+	  			echo form_button($submit);
+	  			echo form_close();
 				}
 				
 				echo anchor("store/read/$product->id",'View', "class='btn btn-default'");
@@ -31,6 +59,5 @@
 	</div>
 <?php } ?>
 </div>
-
 
 

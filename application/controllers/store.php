@@ -143,9 +143,172 @@ class Store extends CI_Controller {
 		redirect('store/index', 'refresh');
 	}
       
-   
+   	function viewCart(){
+   		$data['view'] ='cart/viewCart.php';
+   		$data['viewdata'] = '';
+   		$this->load->view('common/template.php', $data);
+   	}
     
+    function addCart($id){
+    	$this->load->model('product_model');
+		$product = $this->product_model->get($id);
+		$quant = $this->input->post('quant' . $id);
+
+    	session_start();
+		
+		if (!isset($_SESSION['Cart'])) {
+			$_SESSION['Cart'] = array();
+		}
+
+		if (!isset($_SESSION['Cart'][$product->id])){
+			$newCart = new Cart_item();
+			$newCart->prod = $product;
+			$newCart->quant = $quant;
+			$_SESSION['Cart'][$product->id] = $newCart;
+		} else {
+			$_SESSION['Cart'][$product->id]->quant += $quant;
+		}
+
+		redirect('store/viewCart', 'refresh');
+    }
+
+    function editCart(){
+
+    	session_start();
+    	foreach ($_SESSION['Cart'] as $Cart) {
+    		$Cart->quant = $this->input->post("quant" . $Cart->prod->id);
+    	}
+    	redirect('store/viewCart', 'refresh');
+    }
+
+    function rmCart($id){
+
+    	session_start();
+    	unset($_SESSION['Cart'][$id]);
+    	redirect('store/viewCart', 'refresh');
+    }
     
-    
+    function cartToPurchase(){
+    	$data['view'] = 'cart/creditCard.php';
+    	$data['viewdata'] = '';
+   		$this->load->view('common/template.php', $data);
+    }
+
+    function checkCredit(){
+    	$num = strval($this->input->post("CCnumber"));
+    	$month = $this->input->post("CCmonth");
+    	$year = $this->input->post("CCyear");
+
+    	$CurMonth = intval(date("m"), 10);
+    	$CurYear = intval(date("Y"), 10);
+
+    	if ($CurYear > $year) {
+    		# invalid year
+
+    		$this->load->view('cart/creditCard.php');
+
+    	} elseif ($CurYear == $year && $CurMonth >= $month) {
+    		# invalid month
+
+    		$this->load->view('cart/creditCard.php');
+    	} else {
+    		#valid start checkout
+    		
+    		session_start();
+    		$total = 0;
+			foreach ($_SESSION['Cart'] as $Cart) {
+				$total += $Cart->prod->price * $Cart->quant;
+			}
+			$UN = $this->session->userdata('username');
+
+				$this->load->model('customer_model');
+				$customer = $this->customer_model->get($UN);
+
+				$cdate = date("Y-m-d");
+				$ctime = date("H:i:s");
+				$this->load->model('orders_model');
+				
+				$orders = new Orders();
+				$orders->customer_id = $customer->id;
+		        $orders->order_date = $cdate;
+		        $orders->order_time = $ctime;
+		        $orders->total = $total;
+		        $orders->creditcard_number = $num;
+		        $orders->creditcard_month = $month;
+			    $orders->creditcard_year = $year;
+
+			    
+			    $this->orders_model->insert($orders);
+			    
+			    $orders = $this->orders_model->get($customer->id, $cdate, $ctime);
+			    $this->load->model('order_items_model');
+			    foreach ($_SESSION['Cart'] as $Cart) {
+
+			    	$order_items = new Order_items();
+			    	$order_items->order_id = intval($orders->id,10);
+			    	$order_items->product_id = intval($Cart->prod->id, 10);
+			    	$order_items->quantity = intval($Cart->quant, 10);
+
+			    	$this->order_items_model->insert($order_items);
+    			}
+
+    			session_unset();
+    			session_destroy();
+
+    			$this->load->model('product_model');
+    			$viewdata['order_id'] = $orders->id;
+    			$viewdata['total'] = $total;
+
+    			$Items = $this->order_items_model->getAllfromOrder($viewdata['order_id']);
+				$Msg = "Name\t Price\t Quantity \n";
+
+				foreach($Items as $order){
+					$prod_id = $order->product_id;
+					$product = $this->product_model->get($prod_id);
+					$Msg = $Msg . $product->name . "\t" . $product->price . "\t" . $order->quantity . "\n";
+				}
+				$Msg = $Msg . "Total Price: " . $total;
+
+				// // Pear Mail Library
+				// include_once "Mail.php";
+
+				// $from = "email@domain";
+				// $to = $customer->email;
+				// $subject = "Card Shop";
+				// $body = $Msg;
+
+				// $headers = array(
+				//     'From' => $from,
+				//     'To' => $to,
+				//     'Subject' => $subject
+				// );
+
+				// $smtp = @Mail::factory('smtp', array(
+				//         'host' => 'ssl://smtp.mail.yahoo.com',
+				//         'port' => '465',
+				//         'auth' => true,
+				//         'username' => "email@domain",
+				//         'password' => ""
+				//     ));
+
+				// $mail = @$smtp->send($to, $headers, $body);
+
+				// if (PEAR::isError($mail)) {
+				//     echo('<p>' . $mail->getMessage() . '</p>');
+				// } else {
+				//     echo('<p>Message successfully sent!</p>');
+				// }
+				
+    			$data['view'] = 'cart/Receipt.php';
+    			$data['viewdata'] = $viewdata;
+    			$this->load->view('common/template', $data);
+    	}
+    }
 }
 
+class Cart_item {
+	public $prod;
+	public $quant;
+}
+
+?>

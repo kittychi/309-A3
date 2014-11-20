@@ -24,6 +24,9 @@
 						</ul>
 					</li>
 				<?php
+				} else { ?>
+					<li><?php echo 	anchor('store/viewCart', 'View Cart', 'id="ViewCartBtn"'); ?></li>
+				<?php
 				}
 				?>
 			</ul>

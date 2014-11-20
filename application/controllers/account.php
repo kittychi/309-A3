@@ -76,7 +76,6 @@ class Account extends CI_Controller {
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database');
 
-		// $result = $this->customer_model->login($username, $password);
 		if (!$this->form_validation->run()) {
 			$data['view'] = 'account/login.php';
 			$data['viewdata'] = '';
@@ -116,6 +115,7 @@ class Account extends CI_Controller {
 
 
 	function logout() {
+		session_start();
 		if ($this->session->userdata('logged_in')) {
 			$sess_array = array(
 					'username' => '',
@@ -124,6 +124,10 @@ class Account extends CI_Controller {
 					);
 			$this->session->set_userdata($sess_array);
 		}
+
+		session_unset(); 
+		session_destroy();
+
 		redirect('store/index', 'refresh');
 	}
 }
