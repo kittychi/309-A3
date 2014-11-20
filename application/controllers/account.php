@@ -92,6 +92,7 @@ class Account extends CI_Controller {
 	}
 
 	function logout() {
+		session_start();
 		if ($this->session->userdata('logged_in')) {
 			$sess_array = array(
 					'username' => '',
@@ -103,7 +104,7 @@ class Account extends CI_Controller {
 
 		session_unset(); 
 		session_destroy();
-		
+
 		redirect('store/index', 'refresh');
 	}
 }
