@@ -20,8 +20,7 @@
 			echo form_open('store/addCart');
 			echo form_error('quant');
 			$quant = array(
-			             'name'        => 'quant',
-			             'id'          => 'quant' . $product->id,
+			             'name'        => 'quant' . $product->id,
 			             'value' 		=> '1', 
 			             'required'    => 'true',
 			             'type'        => 'number',

@@ -135,17 +135,28 @@ class Store extends CI_Controller {
 	}
       
    	function viewCart(){
+		$this->load->view('common/scripts.html');
    		$this->load->view('cart/viewCart.php');
    	}
     
     function addCart($id){
     	$this->load->model('product_model');
 		$product = $this->product_model->get($id);
+		$quant = $this->input->post('quant' . $id);
 
     	session_start();
 		
 		if (!isset($_SESSION['Cart'])) {
 			$_SESSION['Cart'] = array();
+		}
+
+		if (!isset($_SESSION['Cart'][$product->id])){
+			$newCart = new Cart_item();
+			$newCart->prod = $product;
+			$newCart->quant = $quant;
+			$_SESSION['Cart'][$product->id] = $newCart;
+		} else {
+			$_SESSION['Cart'][$product->id]->quant += $quant;
 		}
 
 		array_push($_SESSION['Cart'], $product);
@@ -154,3 +165,9 @@ class Store extends CI_Controller {
     
 }
 
+class Cart_item {
+	public prod;
+	public quant;
+}
+
+?>
