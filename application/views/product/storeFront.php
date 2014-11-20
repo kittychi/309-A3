@@ -1,7 +1,7 @@
 <h2>Product Table</h2>
 <?php 
 		echo "<table class='table'>";
-		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th><th>Quantity</th>";
+		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th><th id=\"quant\">Quantity</th>";
 
 		if ($loggedin && !$isadmin) {
 			echo "<th>" . anchor('store/viewCart', 'View Cart', 'id="ViewCartBtn" class="btn btn-primary"') . "</th></tr>";
@@ -16,7 +16,7 @@
 			echo "<td>" . $product->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $product->photo_url . "' width='100px' /></td>";
 
-			echo "<td>";
+			echo "<td id=\"quant\">";
 			echo form_open('store/addCart');
 			echo form_error('quant');
 			$quant = array(
