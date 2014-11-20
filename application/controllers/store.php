@@ -161,7 +161,16 @@ class Store extends CI_Controller {
 
 		redirect('store/viewCart', 'refresh');
     }
+
+    function editCart(){
+
+    	redirect('store/viewCart', 'refresh');
+    }
     
+    function cartToPurchase(){
+    	$this->load->view('common/scripts.html');
+   		$this->load->view('cart/creditCard.php');
+    }
 }
 
 class Cart_item {
