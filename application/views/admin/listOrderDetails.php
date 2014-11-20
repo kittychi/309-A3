@@ -15,7 +15,7 @@
 		echo "<p>Credit card info: " . $order->creditcard_number . " expires on: ". $order->creditcard_month . "/" . $order->creditcard_year . "</p>";
 		echo "<p>Total: $" . $order->total . "</p>";
 
-		echo "<table class='table'>";
+		echo "<table class='table table-striped'>";
 		echo "<p>Items included in this order</p>";
 		echo "<tr><th>Card</th><th>Card Info</th></tr>";
 

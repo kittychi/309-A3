@@ -4,6 +4,7 @@
 	<?php $this->load->view('common/scripts.html'); ?>
 </head>
 <body>
+	<div class='container'>
 	<?php 
 
 	$headerdata['loggedin'] = $this->session->userdata('logged_in');
@@ -12,7 +13,8 @@
 
 	$this->load->view('common/header.php', $headerdata); ?>
 
+	
 	<?php $this->load->view($view, $viewdata); ?>
-
+	</div>
 </body>
 </html>
