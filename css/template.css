@@ -50,4 +50,8 @@
 	background: white;
  }
 
+ .thumbnail > img.resize {
+ 	max-width:200px;
+ 	height:auto; 
+ }
 
