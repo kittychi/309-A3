@@ -10,7 +10,7 @@
 	if (!isset($_SESSION['Cart']) || count($_SESSION['Cart']) <= 0) {
 		echo "<p> Your Cart is Empty </p>";
 	} else {
-		echo form_open("store/CheckCredit");
+		echo form_open("store/checkCredit");
 		$total = 0;
 		foreach ($_SESSION['Cart'] as $Cart) {
 			$total += $Cart->prod->price * $Cart->quant;
