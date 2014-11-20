@@ -254,10 +254,10 @@ class Store extends CI_Controller {
 				foreach($Items as $order){
 					$prod_id = $order->product_id;
 					$product = $this->product_model->get($prod_id);
-					$Msg += $product->name . "\t" . $product->price . "\t" . $order->quantity . "\n";
+					$Msg = $Msg . $product->name . "\t" . $product->price . "\t" . $order->quantity . "\n";
 				}
-				$Msg += "Total Price: " . $total;
-				echo "<p>" . $Msg . "</p>";
+				$Msg = $Msg . "Total Price: " . $total;
+
 				// Pear Mail Library
 				include_once "Mail.php";
 
