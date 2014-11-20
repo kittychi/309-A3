@@ -5,12 +5,9 @@
 
 	echo "<table>";
 	echo "<tr><th>Card</th><th>Price</th><th>Quantity</th></tr>";
-	
-	$this->load->model('order_items_model');
+	;
 
 	$Items = $this->order_items_model->getAllfromOrder($order_id);
-
-	$this->load->model('product_model');
 
 	foreach($Items as $order){
 		$prod_id = $order->product_id;
