@@ -1,14 +1,3 @@
-<header>
-<div id='banner'>
-
-	<?php 
-
-	$this->load->helper('html');
-	$banner = img('images/Banner.jpg');
-	echo anchor('store/index', $banner); 
-	
-	?> 
-</div>
 <div class='navbar navbar-default'>
 	<div class='container-fluid'>
 <?php
@@ -21,12 +10,12 @@
 				<li><?php echo anchor('account/logout', 'Logout', 'id="logoutbtn"'); ?> </li>
 			</ul>
 			<ul class='nav navbar-nav'>
+				<li><?php echo anchor('store/index', 'Products', 'id="products"'); ?></li>
 				<?php
 				if ($isadmin) {
 					?>
-					<!-- <div class='btn-group'> -->
-					<li><?php echo anchor('admin/allorders', 'List All Orders', 'id="allordersbtn"'); ?>
-					<li><?php echo anchor('admin/allusers', 'List All Users', 'id="allusersbtn"'); ?> </li>
+					<li><?php echo anchor('admin/allorders', 'Orders', 'id="allordersbtn"'); ?>
+					<li><?php echo anchor('admin/allusers', 'Users', 'id="allusersbtn"'); ?> </li>
 					<li class='dropdown'>
 						 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 						 <ul class="dropdown-menu" role="menu">
@@ -34,7 +23,6 @@
 						  	<li><?php echo anchor('admin/deleteAllUsers','Delete all users and orders', "onClick='return confirm(\"Do you really want to delete all records? This cannot be undone!\");' id='deleteallsbtn'"); ?> </li>
 						</ul>
 					</li>
-					<!-- </div> -->
 				<?php
 				}
 				?>
@@ -96,4 +84,3 @@
 ?>
 	</div>
 </div>
-</header>

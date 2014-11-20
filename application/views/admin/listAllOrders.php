@@ -13,7 +13,7 @@
 			echo '<td>' . $order->creditcard_number . "</td>";
 			echo "<td>" . $order->creditcard_month . "/". $order->creditcard_year . "</td>";
 				
-			echo "<td>" . anchor("admin/userOrdersDetails/$order->customer_id",'View details for this order') . "</td>";
+			echo "<td>" . anchor("admin/userOrdersDetails/$order->customer_id/$order->id",'View details for this order') . "</td>";
 				
 			echo "</tr>";
 		}

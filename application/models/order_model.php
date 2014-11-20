@@ -15,6 +15,14 @@ class Order_model extends CI_Model {
 		return $query->result('Order');
 	}
 
+	function getOrders_oid($oid) {
+		$query = $this->db->get_where('orders', array('id' => $oid));
+		if ($query->num_rows() == 0) {
+			return false; 
+		} 
+		return $query->result('Order');
+	}
+
 	function deleteAll() {
 		$this->db->empty_table('orders'); 
 	}

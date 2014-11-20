@@ -11,15 +11,12 @@
 	      <div class="caption">
 	        <h3><?php echo $product->name; ?></h3>
 	        <h4>$<?php echo $product->price; ?></h4>
-	        <p><?php echo $product->description; ?></p>
 	        <p>
 	        	<?php 
 	        	if ($loggedin && !$isadmin) {
 					echo anchor("",'Add to Cart', "class='btn btn-primary'");
 				}
-				?>
-				<div class='btn-group'>
-				<?php
+				
 				echo anchor("store/read/$product->id",'View', "class='btn btn-default'");
 				if ($isadmin) {
 					
@@ -28,7 +25,6 @@
 					
 				}
 				?>
-				</div>
 	        </p>
 	      </div>
 	    </div>

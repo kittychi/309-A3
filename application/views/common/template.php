@@ -10,9 +10,17 @@
 	$headerdata['loggedin'] = $this->session->userdata('logged_in');
 	$headerdata['username'] = $this->session->userdata('username');
 	$headerdata['isadmin'] = $this->session->userdata('isadmin');
-
-	$this->load->view('common/header.php', $headerdata); ?>
-
+	?>
+	<header> 
+		<div id='banner'>
+			<?php 
+			$this->load->helper('html');
+			$banner = img('images/Banner.jpg');
+			echo anchor('store/index', $banner); 
+			?> 
+		</div>
+		<?php $this->load->view('common/navbar.php', $headerdata); ?>	
+	</header>
 	
 	<?php $this->load->view($view, $viewdata); ?>
 	</div>

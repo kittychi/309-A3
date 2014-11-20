@@ -33,13 +33,18 @@ class Admin extends CI_Controller {
 		$this->load->view('common/template.php', $data);
 	}
 
-	function userOrdersDetails($cid) {
+	function userOrdersDetails($cid, $oid=false) {
 		$this->load->model('customer_model');
 		$this->load->model('order_model');
 		$this->load->model('orderitem_model');
 
 		$customer = $this->customer_model->get_cid($cid);
-		$orders = $this->order_model->getOrders_cid($cid);
+		if (!$oid) {
+			$orders = $this->order_model->getOrders_cid($cid);
+		} else {
+			$orders = $this->order_model->getOrders_oid($oid);
+		}
+
 
 		$viewdata['customer'] = $customer; 
 		$viewdata['orderdetails'] = $this->getOrderDetails($orders); 
