@@ -219,15 +219,13 @@ class Store extends CI_Controller {
 			    $this->orders_model->insert($orders);
 			    
 			    $orders = $this->orders_model->get($customer->id, $cdate, $ctime);
-			    echo "<p>" . $orders->id . "</p>"
-			    sleep(10000);
 			    $this->load->model('order_items_model');
 			    foreach ($_SESSION['Cart'] as $Cart) {
 
 			    	$order_items = new Order_items();
-			    	$order_items = $orders->id;
-			    	$order_items = $Cart->prod->id;
-			    	$order_items = $Cart->quant;
+			    	$order_items->order_id = intval($orders->id,10);
+			    	$order_items->product_id = intval($Cart->prod->id, 10);
+			    	$order_items->quantity = intval($Cart->quant, 10);
 
 			    	$this->order_items_model->insert($order_items);
     			}
