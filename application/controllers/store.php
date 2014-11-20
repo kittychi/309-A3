@@ -159,7 +159,6 @@ class Store extends CI_Controller {
 			$_SESSION['Cart'][$product->id]->quant += $quant;
 		}
 
-		array_push($_SESSION['Cart'], $product);
 		redirect('store/viewCart', 'refresh');
     }
     
