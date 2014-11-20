@@ -3,7 +3,7 @@ class Customer_model extends CI_Model {
 
 	function getAll()
 	{  
-		$query = $this->db->get('customers', array('login !=' => 'admin'));
+		$query = $this->db->get_where('customers', array('login !=' => 'admin'));
 		return $query->result('Customer');
 	}  
 	

@@ -5,15 +5,13 @@
 		echo "<tr><th>Name</th><th>Email</th><th>Username</th></tr>";
 		
 		foreach ($customers as $customer) {
-			if ($customer->login == 'admin') {
-				continue; 
-			}
+			
 			echo "<tr>";
 			echo "<td>" . $customer->first . ' ' . $customer->last . "</td>";
 			echo "<td>" . $customer->email . "</td>";
 			echo "<td>" . $customer->login . "</td>";
 				
-			echo "<td>" . anchor("admin/userOrdersDetails/$customer->id",'View all order details') . "</td>";
+			echo "<td>" . anchor("admin/userOrdersDetails/$customer->id",'View all order for this customer') . "</td>";
 				
 			echo "</tr>";
 		}

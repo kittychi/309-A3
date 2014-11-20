@@ -10,11 +10,27 @@ class Admin extends CI_Controller {
 	function allusers() {
 		$this->load->model('customer_model');
 		$customers = $this->customer_model->getAll();
+
 		$viewdata['customers']=$customers;
 
 		$data['view'] = 'admin/listCustomers.php'; 
 		$data['viewdata'] = $viewdata; 
 		$this->load->view('common/template.php',$data);
+	}
+
+	function allorders() { 
+		$this->load->model('order_model');
+		$this->load->model('customer_model');
+		
+
+		$orders = $this->order_model->getAll();
+		// $orderdetails = 
+		// $viewdata['orders'] = $this->getOrderDetails($orders); 
+		$viewdata['orders'] = $orders;
+		$data['viewdata'] = $viewdata; 
+		$data['view'] = 'admin/listAllOrders.php'; 
+
+		$this->load->view('common/template.php', $data);
 	}
 
 	function userOrdersDetails($cid) {
@@ -24,6 +40,19 @@ class Admin extends CI_Controller {
 
 		$customer = $this->customer_model->get_cid($cid);
 		$orders = $this->order_model->getOrders_cid($cid);
+
+		$viewdata['customer'] = $customer; 
+		$viewdata['orderdetails'] = $this->getOrderDetails($orders); 
+		$data['viewdata'] = $viewdata; 
+		$data['view'] ='admin/listOrderDetails.php';
+
+		$this->load->view('common/template.php', $data);
+	}
+
+	function getOrderDetails($orders) { 
+
+		$this->load->model('orderitem_model');
+
 		$orderdetail = array(); 
 		if ($orders) {
 			foreach ($orders as $order) {
@@ -33,12 +62,8 @@ class Admin extends CI_Controller {
 				$orderdetail[] = $detail; 
 			}
 		}
-		$viewdata['customer'] = $customer; 
-		$viewdata['orderdetails'] = $orderdetail; 
-		$data['viewdata'] = $viewdata; 
-		$data['view'] ='admin/listOrderDetails.php';
 
-		$this->load->view('common/template.php', $data);
+		return $orderdetail;
 	}
 
 	function deleteAllUsers() {
@@ -52,6 +77,8 @@ class Admin extends CI_Controller {
 
 		redirect('admin/allusers', 'refresh');
 	}
+
+
 }
 
 ?>
