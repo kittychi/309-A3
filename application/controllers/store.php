@@ -243,8 +243,8 @@ class Store extends CI_Controller {
 
     			session_unset();
     			session_destroy();
-
-    			$this->load->view('cart/Receipt.php');
+    			$data['order_id'] = $orders->id;
+    			$this->load->view('cart/Receipt.php', $data);
 
     	}
 

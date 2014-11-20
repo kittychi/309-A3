@@ -5,6 +5,12 @@ class Order_items_model extends CI_Model {
 	{  
 		$query = $this->db->get('order_items');
 		return $query->result('Order_items');
+	} 
+
+	function getAllfromOrder($id)
+	{  
+		$query = $this->db->get_where('order_items', array('order_id' => $id));
+		return $query->result('Order_items');
 	}  
 	
 	function get($id)
