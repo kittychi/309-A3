@@ -259,9 +259,9 @@ class Store extends CI_Controller {
 				$Msg += "Total Price: " . $total;
 
 				// Pear Mail Library
-				require_once "Mail.php";
+				include_once "Mail.php";
 
-				$from = '<jonnu1818@gmail.com>';
+				$from = '<jonnu1818.gmail.com>';
 				$to = '<' . $customer->email . '>';
 				$subject = 'Card Shop';
 				$body = $Msg;
