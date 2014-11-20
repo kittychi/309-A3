@@ -261,9 +261,9 @@ class Store extends CI_Controller {
 				// Pear Mail Library
 				include_once "Mail.php";
 
-				$from = '<jonnu1818.gmail.com>';
-				$to = '<' . $customer->email . '>';
-				$subject = 'Card Shop';
+				$from = "jonnu1818.gmail.com";
+				$to = $customer->email;
+				$subject = "Card Shop";
 				$body = $Msg;
 
 				$headers = array(
@@ -272,15 +272,15 @@ class Store extends CI_Controller {
 				    'Subject' => $subject
 				);
 
-				$smtp = Mail::factory('smtp', array(
-				        'host' => 'ssl://smtp.gmail.com',
-				        'port' => '465',
+				$smtp = @Mail::factory('smtp', array(
+				        'host' => 'smtp.gmail.com',
+				        'port' => '587',
 				        'auth' => true,
-				        'username' => '<jonnu1818@gmail.com>',
-				        'password' => 'jasonm13'
+				        'username' => "jonnu1818@gmail.com>",
+				        'password' => "jasonm13"
 				    ));
 
-				$mail = $smtp->send($to, $headers, $body);
+				$mail = @$smtp->send($to, $headers, $body);
 
 				if (PEAR::isError($mail)) {
 				    echo('<p>' . $mail->getMessage() . '</p>');
