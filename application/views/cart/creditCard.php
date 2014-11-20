@@ -24,7 +24,8 @@
 		         'placeholder' => '0000000000000000', 
 	             'required'    => 'true',
 	             'type'        => 'text',
-	             'maxlength'	=> '16'
+	             'maxlength'	=> '16',
+	             'class'       => 'form-control'
 	           );
 		echo form_input($CCnumber);
 
@@ -36,7 +37,8 @@
 		         'placeholder' => 'MM', 
 	             'required'    => 'true',
 	             'type'        => 'number',
-	             'maxlength'	=> '2'
+	             'min'	=> '1',
+	             'max'	=> '12'
 	           );
 		echo form_input($CCmonth);
 
@@ -44,10 +46,11 @@
 		$CCyear = array(
 	             'name'        => 'CCyear', 
 	             'id'          => 'CCyear',
-		         'placeholder' => 'YY', 
+		         'placeholder' => 'YYYY', 
 	             'required'    => 'true',
 	             'type'        => 'number',
-	             'maxlength'	=> '2'
+	             'min'	=> '2014',
+	             'max'	=> '9999'
 	           );
 		echo form_input($CCyear);
 
@@ -56,7 +59,7 @@
 			               'id'          => 'EditCartbtn',
 			               'type'        => 'submit',
 			               'class'       => 'btn btn btn-default',
-			               'content'       => 'Edit Quantites',
+			               'content'       => 'Purchase',
 			             );
 		echo "<p> Total: $" . $total . "</p>";
 		echo form_button($submit);
