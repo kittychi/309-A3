@@ -19,7 +19,7 @@
 					// $banner = img('images/BaseballBanner1.png');
 					// echo anchor('store/index', $banner); 
 					?>
-					<img src='/images/BaseballBannerWide<?php echo rand(0, 2); ?>.png' width='1140px' class="img-responsive"/> 
+					<img src='<?php echo base_url(); ?>/images/BaseballBannerWide<?php echo rand(0, 2); ?>.png' width='1140px' class="img-responsive"/> 
 				</div>
 				<?php $this->load->view('common/navbar.php', $headerdata); ?>	
 			</header>

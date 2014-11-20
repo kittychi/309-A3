@@ -20,7 +20,8 @@
 				             'value' 		=> $Cart->quant, 
 				             'required'    => 'true',
 				             'type'        => 'number',
-				             'min'			=> "1"
+				             'min'			=> "1", 
+				             'class'	=> 'form-control'
 				           );
 			echo "<td>". form_input($quantbtn) . "</td>";
 			echo "<td>" . anchor("store/rmCart/$cid",'Delete') . "</td>";

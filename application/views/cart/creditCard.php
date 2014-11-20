@@ -37,7 +37,8 @@
 	             'required'    => 'true',
 	             'type'        => 'number',
 	             'min'	=> '1',
-	             'max'	=> '12'
+	             'max'	=> '12',
+	             'class' => 'form-control'
 	           );
 		echo form_input($CCmonth);
 
@@ -49,7 +50,8 @@
 	             'required'    => 'true',
 	             'type'        => 'number',
 	             'min'	=> '2014',
-	             'max'	=> '9999'
+	             'max'	=> '9999',
+	             'class' => 'form-control'
 	           );
 		echo form_input($CCyear);
 
