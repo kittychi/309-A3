@@ -16,15 +16,16 @@
 			echo "<td>" . $Cart->prod->description . "</td>";
 			echo "<td>" . $Cart->prod->price . "</td>";
 			echo "<td><img src='" . base_url() . "images/product/" . $Cart->prod->photo_url . "' width='100px' /></td>";
+			$cid = $Cart->prod->id
 			$quantbtn = array(
-				             'name'        => 'quant' . $Cart->prod->id,
+				             'name'        => 'quant' . $cid,
 				             'value' 		=> $Cart->quant, 
 				             'required'    => 'true',
 				             'type'        => 'number',
 				             'min'			=> "1"
 				           );
 			echo "<td>". form_input($quantbtn) . "</td>";
-			echo "<td>" . anchor("store/rmCart/$Cart->prod->id",'Delete') . "</td>";
+			echo "<td>" . anchor("store/rmCart/$cid",'Delete') . "</td>";
 			echo "</tr>";
 			$total += $Cart->prod->price * $Cart->quant;
 		}
