@@ -10,11 +10,11 @@
 		echo "<tr><th>Name</th><th>Description</th><th>Price</th><th>Photo</th><th>Quantity</th></tr>";
 		foreach ($_SESSION['Cart'] as $Cart) {
 			echo "<tr>";
-			echo "<td>" . $Cart->$prod->name . "</td>";
-			echo "<td>" . $Cart->$prod->description . "</td>";
-			echo "<td>" . $Cart->$prod->price . "</td>";
-			echo "<td><img src='" . base_url() . "images/product/" . $Cart->$prod->photo_url . "' width='100px' /></td>";
-			echo "<td>" . $Cart->$quant . "</td>";
+			echo "<td>" . $Cart->prod->name . "</td>";
+			echo "<td>" . $Cart->prod->description . "</td>";
+			echo "<td>" . $Cart->prod->price . "</td>";
+			echo "<td><img src='" . base_url() . "images/product/" . $Cart->prod->photo_url . "' width='100px' /></td>";
+			echo "<td>" . $Cart->quant . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
