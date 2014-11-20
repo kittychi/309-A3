@@ -15,9 +15,17 @@
 			echo anchor('account/logout', 'Logout', 'id="logoutbtn" class="btn btn-primary"');
 
 			if ($isadmin) {
+				?>
+				<div class='btn-group'>
+				<?php
 				echo anchor('admin/allorders', 'List All Orders', 'id="allordersbtn" class="btn btn-primary"');
 				echo anchor('admin/allusers', 'List All Users', 'id="allusersbtn" class="btn btn-primary"');
+				echo anchor('admin/deleteAllUsers','Delete all users and orders', "onClick='return confirm(\"Do you really want to delete all records? This cannot be undone!\");' id='deleteallsbtn' class='btn btn-primary'");
+		
 				echo anchor('store/newForm', 'Add new product', 'id="addproductbtn" class="btn btn-primary"'); 
+				?>
+			</div>
+			<?php
 			}
 		} else {
 

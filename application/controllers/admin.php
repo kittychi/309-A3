@@ -46,6 +46,10 @@ class Admin extends CI_Controller {
 		$this->load->model('order_model');
 		$this->load->model('customer_model');
 
+		$this->orderitem_model->deleteAll();
+		$this->order_model->deleteAll();
+		$this->customer_model->deleteAll();
+
 		redirect('admin/allusers', 'refresh');
 	}
 }
