@@ -138,7 +138,7 @@ class Store extends CI_Controller {
    		$this->load->view('cart/viewCart.php');
    	}
     
-    function addCart($product){
+    function addCart($id){
     	$this->load->model('product_model');
 		$product = $this->product_model->get($id);
 
