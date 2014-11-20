@@ -240,6 +240,8 @@ class Store extends CI_Controller {
 
     			session_unset();
     			session_destroy();
+
+    			$this->load->view('cart/Receipt.php');
 			} else {
 
 				redirect('store/index', 'refresh');
@@ -248,41 +250,6 @@ class Store extends CI_Controller {
     	}
 
 
-    }
-
-    function makeO_item(){
-    	$this->load->library('form_validation');
-		$this->form_validation->set_rules('name','Name','required|is_unique[products.name]');
-		$this->form_validation->set_rules('description','Description','required');
-		$this->form_validation->set_rules('price','Price','required');
-		
-		$fileUploadSuccess = $this->upload->do_upload();
-		
-		if ($this->form_validation->run() == true && $fileUploadSuccess) {
-			$this->load->model('product_model');
-
-			$product = new Product();
-			$product->name = $this->input->get_post('name');
-			$product->description = $this->input->get_post('description');
-			$product->price = $this->input->get_post('price');
-			
-			$data = $this->upload->data();
-			$product->photo_url = $data['file_name'];
-			
-			$this->product_model->insert($product);
-
-			//Then we redirect to the index page again
-			redirect('store/index', 'refresh');
-		}
-		else {
-			if ( !$fileUploadSuccess) {
-				$data['fileerror'] = $this->upload->display_errors();
-				$this->load->view('product/newForm.php',$data);
-				return;
-			}
-			
-			$this->load->view('product/newForm.php');
-		}	
     }
 }
 
