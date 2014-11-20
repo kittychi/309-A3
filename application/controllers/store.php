@@ -276,7 +276,7 @@ class Store extends CI_Controller {
 				        'host' => 'smtp.gmail.com',
 				        'port' => '587',
 				        'auth' => true,
-				        'username' => "jonnu1818",
+				        'username' => "jonnu1818@gmail.com",
 				        'password' => "jasonm13"
 				    ));
 
