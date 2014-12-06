@@ -30,7 +30,7 @@
 			echo "Wating on " . $otherUser->login;
 	?>
 	</div>
-	<canvas id="gameboard" width="780" height="670"></canvas>
+	<canvas id="gameboard" width="780" height="800"></canvas>
 	
 	<canvas id="message" width="780" height="100"></canvas>
 	<script>
