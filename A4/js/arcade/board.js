@@ -123,7 +123,7 @@ $(function(){
 		}
 		
 		function yourTurn() { 
-			return curTurn == user; 
+			return true; 
 		}
 		
 		function drawHeader() {
