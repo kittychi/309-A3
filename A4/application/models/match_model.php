@@ -42,5 +42,22 @@ class Match_model extends CI_Model {
 		return $this->db->update('match',array('match_status_id'=>$status));
 	}
 	
+	function updateBoardState($id, $board) {
+		$this->db->where('id', $id);
+		return $this->db->update('match', array('board_state'=>json_encode($board)));
+	}
+	
+	function getBoardState($id) {
+		$this->db->where('id', $id);
+		$query = $this->db->get('match')->row(0);
+		$json = $query['board_state'];
+		$data = json_decode($json, true);
+		
+		$board = new Board_State();
+		foreach ($data AS $key => $value) $board->{$key} = $value;
+		
+		return $board; 
+		
+	}
 }
 ?>
