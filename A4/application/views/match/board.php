@@ -38,6 +38,7 @@
     var context = canvas.getContext('2d');
 	var messagecan = document.getElementById("message"); 
 	var messagectx = messagecan.getContext("2d"); 
+
 	</script>
 	<script src="<?= base_url()?>/js/arcade/board.js"></script>
 	

@@ -22,6 +22,16 @@ $(function(){
 								$('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
 						}
 					});
+					
+					var url = base_url+"board/getBoard"; 
+					$.getJSON(url, function (data, status, jqXHR) {
+						if (data && data.status=='success'){
+							this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+							drawBorder(); 
+							//loop through to draw all pieces; 
+							//drawPiece(x, y, "yellow"); 
+						}
+					});
 			});
 
 			$('form').submit(function(){
@@ -42,7 +52,7 @@ $(function(){
 			var i; 
 			for (i = 0; i<8; i++) {
 				this.context.beginPath();
-				this.context.strokStyle="blue"; 
+				this.context.strokeStyle="blue"; 
 				this.context.lineWidth=10; 
 				this.context.moveTo(5+i*100, 0); 
 				this.context.lineTo(5+i*100, 610); 
@@ -57,6 +67,16 @@ $(function(){
 				this.context.lineTo(710, 5+i*100); 
 				this.context.stroke(); 
 			}
+		}
+		
+		function drawPiece(col, row, colour) {
+			this.context.beginPath(); 
+			this.context.arc(col*100+55, row*100+55, 45, 0, Math.PI * 2);
+			this.context.fillStyle=colour;
+			this.context.fill();
+			this.context.strokeStyle = "black"; 
+			this.context.lineWidth=5; 
+			this.context.stroke();
 		}
 
 		function getMousePos(evt) {
@@ -81,4 +101,10 @@ $(function(){
           var mousePos = getMousePos(evt);
           var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
           writeMessage(message);
+          drawPiece(mousePos.x, mousePos.y, "yellow");
+          var url = base_url+"board/validateMove";
+          $.post(url, {col:mousePos.x}, function(data, status, jqXHR) {
+        	  //show error message if any (not your turn or can't add to column)
+        	  //http://www.dyn-web.com/tutorials/php-js/json/multidim-arrays.php
+          });
         }, false);

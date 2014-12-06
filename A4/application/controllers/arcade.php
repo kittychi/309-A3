@@ -83,7 +83,7 @@ class Arcade extends CI_Controller {
 	    $match->user2_id = $hostUser->id;
 	    $this->match_model->insert($match);
 	    $matchId = mysql_insert_id();
-
+	    
 	    // update status of both users
 	    $this->user_model->updateStatus($user->id,User::PLAYING);
 	    $this->user_model->updateStatus($hostUser->id,User::PLAYING);
@@ -97,6 +97,21 @@ class Arcade extends CI_Controller {
 	    
 	    // if all went well commit changes
 	    $this->db->trans_commit();
+	    
+	    
+// 	    $p1 = array("1"=>"","2"=>"","3"=>"","4"=>"","5"=>"","6"=>"","7"=>"");
+// 	    $p2 = array("1"=>"","2"=>"","3"=>"","4"=>"","5"=>"","6"=>"","7"=>"");
+	    
+// 	    $p1json = json_encode($p1);
+// 	    $p2json = json_encode($p2);
+// 	    $board = array("p1"=>$p1json, "p2"=>$p2json);
+// 	    $boardjson = json_encode($board);
+// 	    $this->db->trans_begin(); 
+	   
+// 	    $this->match_mode->updateBoardState($matchId, $boardjson);
+// 	    if ($this->db->trans_status() === FALSE)
+// 	    	goto transactionerror; 
+// 	    $this->db->trans_commit(); 
 	    
 	    echo json_encode(array('status'=>'success'));
 	    
