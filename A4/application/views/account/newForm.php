@@ -50,7 +50,7 @@
 ?>
 	<img id="captcha" src="/309-A3/A4//securimage/securimage_show.php" alt="CAPTCHA Image" />
 <?php
-	echo form_input("captcha_code", "size='10' maxlength='6'");
+	echo form_input("captcha_code", '', "size='10' maxlength='6'");
 ?>
 	<a href="#" onclick="document.getElementById('captcha').src = '/309-A3/A4//securimage/securimage_show.php?' + Math.random(); return false">[ Different Image ]</a>
 <?php
