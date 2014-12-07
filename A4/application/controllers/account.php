@@ -92,10 +92,8 @@ class Account extends CI_Controller {
 	    		$clearPassword = $this->input->post('password');
 	    		$user->encryptPassword($clearPassword);
 	    		$user->email = $this->input->post('email');
-	    		
+
 	    		$this->load->model('user_model');
-	    		 
-	    		
 	    		$error = $this->user_model->insert($user);
 	    		
 	    		$this->load->view('account/loginForm');
