@@ -143,6 +143,7 @@ class Arcade extends CI_Controller {
 		
 		// update status 
 		$this->user_model->updateStatus($user->id,User::AVAILABLE);
+		$this->user_model->updateInvitation($user->id, null);
 		 
 		if ($this->db->trans_status() === FALSE)
 			goto transactionerror;
@@ -180,6 +181,7 @@ class Arcade extends CI_Controller {
 				break;
 			case Invite::REJECTED:
 				$this->user_model->updateStatus($user->id,User::AVAILABLE);
+				$this->user_model->updateInvitation($user->id, null);
 				echo json_encode(array('status'=>'rejected'));
 		} 
 	}

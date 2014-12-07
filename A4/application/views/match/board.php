@@ -34,9 +34,11 @@
 			echo "Wating on " . $otherUser->login;
 	?>
 	</div>
-	<canvas id="gameboard" width="780" height="800"></canvas>
 	
 	<canvas id="message" width="780" height="100"></canvas>
+	<br>
+	<canvas id="gameboard" width="780" height="720"></canvas>
+	<br>
 	<script>
 	var canvas = document.getElementById('gameboard');
     var context = canvas.getContext('2d');

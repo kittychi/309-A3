@@ -297,7 +297,7 @@ class Board extends CI_Controller {
  			if (strpos($cols, '0') === false ){
  				goto tied;
  			}
- 			echo json_encode(array('status'=>'success', 'col'=>$col, 'row'=>$row, 'diagonal1'=>$diagonal1, 'diagonal2'=>$diagonal2));
+ 			echo json_encode(array('status'=>'success'));
  				
  			return;
  		}

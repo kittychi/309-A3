@@ -13,41 +13,36 @@ $(function(){
 								}
 								
 						});
-					}
-//					var url = base_url+"board/getMsg";
-//					$.getJSON(url, function (data,text,jqXHR){
-//						if (data && data.status=='success') {
-//							var conversation = $('[name=conversation]').val();
-//							var msg = data.message;
-//							if (msg.length > 0)
-//								$('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
-//						}
-//					});
-					
-					var url = base_url+"board/getBoard"; 
-					$.getJSON(url, function (data, status, jqXHR) {
-						if (data && data.status=='success'){
-						// update board status
-							updateBoard(data.board, data.turn);
-							drawBoard(); 
-							if (data.end) {
-								if (confirm(data.message + " \nClick OK to start another game!")) {
-									$.getJSON(base_url+'arcade/endgame',function(data, text, jqZHR){
-										if (data && data.status == 'success') {
-											window.location.href = base_url+'arcade/index';
-										} 
-									});	
-								}
-								
-							//	$.post(base_url+'arcade/endGame');
+					} else {
+						var url = base_url+"board/getMsg";
+						$.getJSON(url, function (data,text,jqXHR){
+							if (data && data.status=='success') {
+								var conversation = $('[name=conversation]').val();
+								var msg = data.message;
+								if (msg.length > 0)
+									$('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
 							}
-						} else if (data && data.status=='failure'){
-							writeMessage(data.message);
-						} 
-					});
-					
-					// redrawing the board -- comment out when getBoard is in use
-//					drawBoard();
+						});
+						
+						var url = base_url+"board/getBoard"; 
+						$.getJSON(url, function (data, status, jqXHR) {
+							if (data && data.status=='success'){
+								// update board board and redraw it on the page. 
+								updateBoard(data.board, data.turn);
+								drawBoard(); 
+								// check that game is over
+								if (data.end) {
+									if (confirm(data.message + " \nClick OK to start another game!")) {
+										$.getJSON(base_url+'arcade/endgame',function(data, text, jqZHR){
+											if (data && data.status == 'success') {
+												window.location.href = base_url+'arcade/index';
+											} 
+										});	
+									}
+								}
+							} 
+						});
+					}
 			});
 
 			$('form').submit(function(){
@@ -167,9 +162,12 @@ $(function(){
 
 		function writeMessage(message) {
 	          this.messagectx.clearRect(0, 0, this.messagecan.width, this.messagecan.height);
-	          this.messagectx.font = '18pt Calibri';
+	          this.messagectx.font = '18pt Helvetica';
 	          this.messagectx.fillStyle = 'black';
-	          this.messagectx.fillText(message, 10, 25);
+	          this.messagectx.textAlign = 'center';
+	          var width = this.messagectx.measureText(message);
+	          this.messagectx.fillText(message, this.messagecan.width/2, this.messagecan.height/2);
+	          
 	        }
 	        
         this.canvas.addEventListener('mousedown', function(evt) {
@@ -181,15 +179,15 @@ $(function(){
         	  if (response && response.status == 'failure') {
         		  writeMessage(response.message);
         	  } 
-        	  //show error message if any (not your turn or can't add to column)
-        	  //http://www.dyn-web.com/tutorials/php-js/json/multidim-arrays.php
           });
         }, false);
         
         this.canvas.addEventListener('mousemove', function(evt) {
             var mousePos = getMousePos(evt);
-         //   var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-//            writeMessage(message);
             setMouseOver(mousePos.x);
           
           }, false);
+        
+        this.canvas.addEventListener('mouseout', function(evt) {
+        	setMouseOver(-1);
+        }, false);
