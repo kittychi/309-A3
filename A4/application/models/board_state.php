@@ -5,16 +5,4 @@ class Board_State {
 	
 	public $turn; 
 	public $board;
-
-	public function newBoard() {
-		$this->$turn = 1;
-		$this->$board = array(
-			array(0,0,0,0,0,0,0),
-			array(0,0,0,0,0,0,0),
-			array(0,0,0,0,0,0,0),
-			array(0,0,0,0,0,0,0),
-			array(0,0,0,0,0,0,0),
-			array(0,0,0,0,0,0,0)
-			);
-	}
 }

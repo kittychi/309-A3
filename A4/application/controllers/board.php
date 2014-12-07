@@ -140,6 +140,30 @@ class Board extends CI_Controller {
  	}
  	
  	
+ 	function getBoard() { 
+ 		$this->load->model('user_model');
+ 		$this->load->model('match_model');
+ 		
+ 		$user = $_SESSION['user'];
+ 		
+ 		$user = $this->user_model->get($user->login);
+ 		if ($user->user_status_id != User::PLAYING) {
+ 			$errormsg="Not in PLAYING state";
+ 			goto error;
+ 		}
+ 		
+ 		$boardstate = $this->match_model->getBoardState($user->match_id);
+ 		
+ 		$board = $boardstate->board; 
+ 		$turn = $boardstate->turn; 
+ 		echo json_encode(array('status'=>'success', 'board'=>$board, 'turn'=>$turn));
+ 		
+ 		return; 
+ 		
+ 		error: 
+ 		echo json_encode(array('status'=>'failure', 'message'=>$errormsg));
+ 	}
+ 	
  	function validateMove() { 
  		$this->load->library('form_validation');
  		$this->form_validation->set_rules('col', 'Column', 'required');
@@ -158,10 +182,20 @@ class Board extends CI_Controller {
  		
  			$match = $this->match_model->get($user->match_id);
  			
-//  			$board = $this->match_model->getBoardState($user->match_id);
+ 			$board = $this->match_model->getBoardState($user->match_id);
  			
  			$col = $this->input->post('col');
 
+ 			$curBoard = $board->board; 
+ 			$curTurn = $board->turn; 
+ 			
+ 			$curBoard[$col][0] = 1; 
+ 			
+ 			$newBoard = new Board_State();
+ 			$newBoard->board = $curBoard; 
+ 			$newBoard->turn = $newBoard::U2;
+ 			
+ 			$this->match_model->updateBoardState($user->match_id, $newBoard);
  			
 //  			if ($match->user1_id == $user->id)  {
 //  				$msg = $match->u1_msg == ''? $msg :  $match->u1_msg . "\n" . $msg;

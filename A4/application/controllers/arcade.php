@@ -84,10 +84,18 @@ class Arcade extends CI_Controller {
 	    $this->match_model->insert($match);
 	    $matchId = mysql_insert_id();
 
-	    /*$board = new Board_State();
-	    $board->newBoard();
+	    $board = new Board_State();
+	    $board->board =  array(
+			array(0,0,0,0,0,0,0),
+			array(0,0,0,0,0,0,0),
+			array(0,0,0,0,0,0,0),
+			array(0,0,0,0,0,0,0),
+			array(0,0,0,0,0,0,0),
+			array(0,0,0,0,0,0,0)
+			);
+	    $board->turn = $board::U1; 
 	    $blob = serialize($board);
-	    $this->match_model->updateBoardState($matchId, $blob);*/
+	    $this->match_model->updateBoardState($matchId, $blob);
 
 	    
 	    // update status of both users
