@@ -9,7 +9,7 @@
 	<script src="<?= base_url() ?>/js/jquery.timers.js"></script>
 	<script>
 		$(function(){
-			$('#availableUsers').setInterval(function(){
+			$('#availableUsers').everyTime(500,function(){
 					$('#availableUsers').load('<?= base_url() ?>arcade/getAvailableUsers');
 
 					$.getJSON('<?= base_url() ?>arcade/getInvitation',function(data, text, jqZHR){
@@ -25,7 +25,7 @@
 									$.post("<?= base_url() ?>arcade/declineInvitation");
 							}
 						});
-				});, 500)
+				});
 			});
 	
 	</script>
