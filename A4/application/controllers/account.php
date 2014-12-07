@@ -85,18 +85,6 @@ class Account extends CI_Controller {
 	    	}
 	    	else  
 	    	{
-	    		$user = new User();
-	    		 
-	    		$user->login = $this->input->post('username');
-	    		$user->first = $this->input->post('first');
-	    		$user->last = $this->input->post('last');
-	    		$clearPassword = $this->input->post('password');
-	    		$user->encryptPassword($clearPassword);
-	    		$user->email = $this->input->post('email');
-
-	    		$this->load->model('user_model');
-	    		$error = $this->user_model->insert($user);
-
 	    		// Captcha check
 	    		include_once $_SERVER['DOCUMENT_ROOT'] . '/securimage/securimage.php';
 				$securimage = new Securimage();
@@ -110,6 +98,18 @@ class Account extends CI_Controller {
 					echo "Please go <a href='javascript:history.go(-1)'>back</a> and try again.";
 					exit;
 				}
+	    		
+	    		$user = new User();
+	    		 
+	    		$user->login = $this->input->post('username');
+	    		$user->first = $this->input->post('first');
+	    		$user->last = $this->input->post('last');
+	    		$clearPassword = $this->input->post('password');
+	    		$user->encryptPassword($clearPassword);
+	    		$user->email = $this->input->post('email');
+
+	    		$this->load->model('user_model');
+	    		$error = $this->user_model->insert($user);
 
 	    		
 	    		$this->load->view('account/loginForm');
