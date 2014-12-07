@@ -30,8 +30,9 @@ $(function(){
 							updateBoard(data.board, data.turn);
 							drawBoard(); 
 						// update who's turn it is
-						} else {
+						} else if (data && data.status=='failure'){
 						// display the error
+							alert(data.message);
 						}		
 					});
 					
@@ -164,13 +165,15 @@ $(function(){
 	        
         this.canvas.addEventListener('mousedown', function(evt) {
           var mousePos = getMousePos(evt);
-          drawPiece(mousePos.x, mousePos.y, "yellow");
+          //drawPiece(mousePos.x, mousePos.y, "yellow");
           var url = base_url+"board/validateMove";
           $.post(url, {col:mousePos.x}, function(data, status, jqXHR) {
         	  if (data && data.status == 'success') {
         		  alert("move successful");
         	  } else if (data && data.status == 'failure') {
         		  alert("move failed");
+        	  } else if (data && data.status == 'won') {
+        		  alert("you won!"); 
         	  }
         	  //show error message if any (not your turn or can't add to column)
         	  //http://www.dyn-web.com/tutorials/php-js/json/multidim-arrays.php

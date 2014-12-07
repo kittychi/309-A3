@@ -152,10 +152,12 @@ class Board extends CI_Controller {
  			goto error;
  		}
  		
- 		$boardstate = $this->match_model->getBoardState($user->match_id);
  		
+ 		$boardstate = $this->match_model->getBoardState($user->match_id);
+ 
  		$board = $boardstate->board; 
  		$turn = $boardstate->turn; 
+ 		
  		echo json_encode(array('status'=>'success', 'board'=>$board, 'turn'=>$turn));
  		
  		return; 
@@ -168,7 +170,7 @@ class Board extends CI_Controller {
  		$this->load->library('form_validation');
  		$this->form_validation->set_rules('col', 'Column', 'required');
  			
- 		if ($this->form_validation->run() == TRUE) {
+ 		if ($this->form_validation->run() === TRUE) {
  			$this->load->model('user_model');
  			$this->load->model('match_model');
  		
@@ -181,30 +183,83 @@ class Board extends CI_Controller {
  			}
  		
  			$match = $this->match_model->get($user->match_id);
+ 			$p = ($match->user1_id == $user->id) ? 1: 2;
  			
  			$board = $this->match_model->getBoardState($user->match_id);
+ 			 			
+ 			// check if user's turn
+ 			$curBoard = $board->board;
+ 			$curTurn = $board->turn;
+ 			if ($curTurn != $p) {
+ 				$errormsg="Not your turn yet!"; 
+ 				goto error; 
+ 			}
  			
  			$col = $this->input->post('col');
-
- 			$curBoard = $board->board; 
- 			$curTurn = $board->turn; 
  			
- 			$curBoard[$col][0] = 1; 
+ 			// get next available empty space
+ 			$curCol_string = implode($curBoard[$col]);
+			$row = strrpos($curCol_string, '0');
+			
+			// check if column is full
+			if ($row === false) {
+				$errormsg="The column is full!";
+				goto error;
+			}
+ 			
+ 			$curBoard[$col][$row] = $p;
+
+ 			$winning = $p.$p.$p.$p;
+ 			//check if horizontal win
+ 			$horizonal = $curBoard[0][$row].$curBoard[1][$row].$curBoard[2][$row].$curBoard[3][$row].$curBoard[4][$row].$curBoard[5][$row].$curBoard[6][$row];
+ 			$posh = strpos($horizonal, $winning);
+ 			
+ 			$vertical =implode($curBoard[$col]);
+ 			$posv = strpos($vertical, $winning);
+ 			
+ 			$s = min($col, $row);
+ 			$diagonal1 = "";
+ 			for ($i = 0; $i < 6; $i++) {
+ 				$x = $col-$s+$i;
+ 				$y = $row-$s+$i;
+ 				$diagonal1 = $diagonal1.$curBoard[$x][$y];
+ 				if ($x == 6 || $y == 5) {
+ 					break;
+ 				}
+ 			}
+ 			$posd1 = strpos($diagonal1, $winning);
+ 				
+ 			$s = m(6-$col, 5-$row);
+ 			$diagonal2="";
+ 			for ($i = 0; $i < 6; $i++) {
+ 				$x = $col+$s-$i;
+ 				$y = $row-$s+$i;
+ 				$diagonal2 = $diagonal2.$curBoard[$x][$y];
+ 				if ($x == 6 || $y == 0) {
+ 					break;
+ 				}
+ 			}
+ 			$posd2 = strpos($diagonal2, $winning);
+ 			
+ 			if ($posh !== false || $posv !== false || $posd1 !== false || $posd2 !== false) {
+ 				goto win;
+ 			}
  			
  			$newBoard = new Board_State();
  			$newBoard->board = $curBoard; 
- 			$newBoard->turn = $newBoard::U2;
+ 			$newBoard->turn = $newBoard::U1;
  			
+ 			$this->db->trans_begin(); 
  			$this->match_model->updateBoardState($user->match_id, $newBoard);
  			
-//  			if ($match->user1_id == $user->id)  {
-//  				$msg = $match->u1_msg == ''? $msg :  $match->u1_msg . "\n" . $msg;
-//  				$this->match_model->updateMsgU1($match->id, $msg);
-//  			}
-//  			else {
-//  				$msg = $match->u2_msg == ''? $msg :  $match->u2_msg . "\n" . $msg;
-//  				$this->match_model->updateMsgU2($match->id, $msg);
-//  			}
+ 			if ($this->db->trans_status() === false) {
+ 				$this->db->trans_rollback(); 
+ 				$errormsg = "database error";
+ 				goto error; 
+ 			}
+ 			else {
+ 				$this->db->trans_commit(); 	
+ 			}
  				
  			echo json_encode(array('status'=>'success'));
  				
@@ -212,9 +267,16 @@ class Board extends CI_Controller {
  		}
  		
  		$errormsg="Missing argument";
- 			
+ 		
  		error:
  		echo json_encode(array('status'=>'failure','message'=>$errormsg));
+ 		return; 
+ 		
+ 		win: 
+ 		echo json_encode(array('status'=>'won', 'message'=>'game over, you won!'));
+ 		return; 
+ 		//handle winning condition here
  	}
+ 	
  }
 
