@@ -13,29 +13,30 @@ $(function(){
 								
 						});
 					}
-					var url = base_url+"board/getMsg";
-					$.getJSON(url, function (data,text,jqXHR){
-						if (data && data.status=='success') {
-							var conversation = $('[name=conversation]').val();
-							var msg = data.message;
-							if (msg.length > 0)
-								$('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
-						}
-					});
-					
-//					var url = base_url+"board/getBoard"; 
-//					$.getJSON(url, function (data, status, jqXHR) {
-//						if (data && data.status=='success'){
-//						// update board status
-//							drawBoard(); 
-//						// update who's turn it is
-//						} else {
-//						// display the error
-//						}		
+//					var url = base_url+"board/getMsg";
+//					$.getJSON(url, function (data,text,jqXHR){
+//						if (data && data.status=='success') {
+//							var conversation = $('[name=conversation]').val();
+//							var msg = data.message;
+//							if (msg.length > 0)
+//								$('[name=conversation]').val(conversation + "\n" + otherUser + ": " + msg);
+//						}
 //					});
 					
+					var url = base_url+"board/getBoard"; 
+					$.getJSON(url, function (data, status, jqXHR) {
+						if (data && data.status=='success'){
+						// update board status
+							updateBoard(data.board, data.turn);
+							drawBoard(); 
+						// update who's turn it is
+						} else {
+						// display the error
+						}		
+					});
+					
 					// redrawing the board -- comment out when getBoard is in use
-					drawBoard();
+//					drawBoard();
 			});
 
 			$('form').submit(function(){
@@ -50,10 +51,28 @@ $(function(){
 				});	
 		});
 
+		var board;
+		var turn; 
+		function updateBoard(board, turn) {
+			this.board = board; 
+			this.turn = turn; 
+		}
+		
 		function drawBoard() {
 			this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
 			drawBorder(); 
 			drawHeader(); 
+			for (var i = 0; i<this.board.length; i++) {
+				for (var j = 0; j<this.board[i].length; j++) {
+					if (this.board[i][j] == 1) {
+						drawPiece(i, j, 'red');
+					} else if (this.board[i][j] == 2){
+						drawPiece(i, j, 'yellow');
+					}
+				}
+				
+			}
+			
 		}
 
 		function drawBorder() {
@@ -148,6 +167,11 @@ $(function(){
           drawPiece(mousePos.x, mousePos.y, "yellow");
           var url = base_url+"board/validateMove";
           $.post(url, {col:mousePos.x}, function(data, status, jqXHR) {
+        	  if (data && data.status == 'success') {
+        		  alert("move successful");
+        	  } else if (data && data.status == 'failure') {
+        		  alert("move failed");
+        	  }
         	  //show error message if any (not your turn or can't add to column)
         	  //http://www.dyn-web.com/tutorials/php-js/json/multidim-arrays.php
           });

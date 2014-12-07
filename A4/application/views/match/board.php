@@ -20,6 +20,7 @@
 
 	<div>
 	Hello <?= $user->fullName() ?>  <?= anchor('account/logout','(Logout)') ?>  
+	
 	</div>
 	
 	<div id='status'> 
