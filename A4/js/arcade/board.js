@@ -9,6 +9,7 @@ $(function(){
 								if (data && data.status=='accepted') {
 									status = 'playing';
 									$('#status').html('Playing ' + otherUser);
+									writeMessage("");
 								}
 								
 						});
@@ -29,11 +30,20 @@ $(function(){
 						// update board status
 							updateBoard(data.board, data.turn);
 							drawBoard(); 
-						// update who's turn it is
+							if (data.end) {
+								if (confirm(data.message + " \nClick OK to start another game!")) {
+									$.getJSON(base_url+'arcade/endgame',function(data, text, jqZHR){
+										if (data && data.status == 'success') {
+											window.location.href = base_url+'arcade/index';
+										} 
+									});	
+								}
+								
+							//	$.post(base_url+'arcade/endGame');
+							}
 						} else if (data && data.status=='failure'){
-						// display the error
-							alert(data.message);
-						}		
+							writeMessage(data.message);
+						} 
 					});
 					
 					// redrawing the board -- comment out when getBoard is in use
@@ -131,6 +141,9 @@ $(function(){
 		var curColumnSelected = -1 ; 
 		
 		function setMouseOver(x) {
+			if (curColumnSelected != x) {
+				writeMessage("");
+			}
 			if (x < 0 || x > 7) {
 				curColumnSelected = -1; 
 			} else { 
@@ -138,20 +151,16 @@ $(function(){
 			}
 		}
 		
-		function isFull(col) {
-			return col == 3; 
-		}
-		
 		function yourTurn() { 
-			return true; 
+			return this.turn == this.me; 
 		}
 		
 		function drawHeader() {
 			if (this.curColumnSelected >= 0 && this.curColumnSelected < 7) {
-				if (isFull(curColumnSelected) || !yourTurn() ) {
+				if (!yourTurn()) {
 					drawPiece(curColumnSelected, -1, "gray");
 				} else {
-					drawPiece(curColumnSelected, -1, "yellow");
+					drawPiece(curColumnSelected, -1, this.colour);
 				}
 			}
 		}
@@ -168,13 +177,10 @@ $(function(){
           //drawPiece(mousePos.x, mousePos.y, "yellow");
           var url = base_url+"board/validateMove";
           $.post(url, {col:mousePos.x}, function(data, status, jqXHR) {
-        	  if (data && data.status == 'success') {
-        		  alert("move successful");
-        	  } else if (data && data.status == 'failure') {
-        		  alert("move failed");
-        	  } else if (data && data.status == 'won') {
-        		  alert("you won!"); 
-        	  }
+        	  var response = JSON.parse(data);
+        	  if (response && response.status == 'failure') {
+        		  writeMessage(response.message);
+        	  } 
         	  //show error message if any (not your turn or can't add to column)
         	  //http://www.dyn-web.com/tutorials/php-js/json/multidim-arrays.php
           });
@@ -182,8 +188,8 @@ $(function(){
         
         this.canvas.addEventListener('mousemove', function(evt) {
             var mousePos = getMousePos(evt);
-            var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-            writeMessage(message);
+         //   var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+//            writeMessage(message);
             setMouseOver(mousePos.x);
           
           }, false);

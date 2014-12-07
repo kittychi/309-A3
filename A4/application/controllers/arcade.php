@@ -79,8 +79,8 @@ class Arcade extends CI_Controller {
 	    
 	    // create a match entry
 	    $match = new Match();
-	    $match->user1_id = $user->id;
-	    $match->user2_id = $hostUser->id;
+	    $match->user2_id = $user->id;
+	    $match->user1_id = $hostUser->id;
 	    $this->match_model->insert($match);
 	    $matchId = mysql_insert_id();
 
@@ -260,6 +260,40 @@ class Arcade extends CI_Controller {
     			$this->db->trans_rollback();
     		}
     		
+    }
+    
+    // reset the user's status once the game is done
+    function endGame() { 
+    	$user = $_SESSION['user'];
+		 
+		$this->load->model('user_model');
+		
+		$this->db->trans_begin(); 
+		
+		$user = $this->user_model->getExclusive($user->login);
+		$this->user_model->updateStatus($user->id, User::AVAILABLE);
+		$this->user_model->updateMatch($user->id, null);
+		$this->user_model->updateInvitation($user->id, null);
+		
+		
+	    if ($this->db->trans_status() === FALSE)
+	    		goto transactionerror;
+	    
+	    // if all went well commit changes
+	    $this->db->trans_commit();
+	    
+	    
+	    echo json_encode(array('status'=>'success'));
+	    
+	    return;
+	    
+	    // something went wrong
+	    transactionerror:
+	    $this->db->trans_rollback();
+
+	    echo json_encode(array('status'=>'failure'));
+		
+		
     }
  
  }

@@ -33,12 +33,18 @@ class Board extends CI_Controller {
 	    		$invite = $this->invite_model->get($user->invite_id);
 	    		$otherUser = $this->user_model->getFromId($invite->user2_id);
 	    	}
-	    	else if ($user->user_status_id == User::PLAYING) {
+	    	elseif ($user->user_status_id == User::PLAYING) {
 	    		$match = $this->match_model->get($user->match_id);
-	    		if ($match->user1_id == $user->id)
+	    		if ($match->user1_id == $user->id) {
+	    			$p = 1; 
 	    			$otherUser = $this->user_model->getFromId($match->user2_id);
-	    		else
+	    		}
+	    		else {
+	    			$p = 2; 
 	    			$otherUser = $this->user_model->getFromId($match->user1_id);
+	    		}
+	    		
+	    		$data['playerIndex'] = $p;
 	    	}
 	    	
 	    	$data['user']=$user;
@@ -152,18 +158,37 @@ class Board extends CI_Controller {
  			goto error;
  		}
  		
- 		
+ 		$match = $this->match_model->get($user->match_id);
  		$boardstate = $this->match_model->getBoardState($user->match_id);
  
  		$board = $boardstate->board; 
  		$turn = $boardstate->turn; 
- 		
+		$status = $match->match_status_id; 
+ 		if ($status != Match::ACTIVE) {
+ 			goto gameend;
+ 		}
+ 	
  		echo json_encode(array('status'=>'success', 'board'=>$board, 'turn'=>$turn));
  		
  		return; 
  		
  		error: 
  		echo json_encode(array('status'=>'failure', 'message'=>$errormsg));
+ 		return; 
+ 		
+ 		gameend:
+ 		$endmsg = "Game over! \n";
+ 		if ($status == Match::U1WON) {
+ 			$winner = $this->user_model->getFromId($match->user1_id);
+ 			$endmsg = $endmsg. $winner->login. " won!";
+ 		} elseif ($status == Match::U2WON){
+ 			$winner = $this->user_model->getFromId($match->user2_id);
+ 			$endmsg = $endmsg. $winner->login. " won!";
+ 		} elseif ($status == Match::TIED) {
+ 			$endmsg = $endmsg. "Tied game!";
+ 		}
+ 		echo json_encode(array('status'=>'success', 'end'=>true, 'message' => $endmsg, 'board'=>$board));
+ 		return; 
  	}
  	
  	function validateMove() { 
@@ -183,7 +208,7 @@ class Board extends CI_Controller {
  			}
  		
  			$match = $this->match_model->get($user->match_id);
- 			$p = ($match->user1_id == $user->id) ? 1: 2;
+ 			$p = ($match->user1_id == $user->id) ? Board_State::U1 : Board_State::U2;
  			
  			$board = $this->match_model->getBoardState($user->match_id);
  			 			
@@ -222,32 +247,32 @@ class Board extends CI_Controller {
  			for ($i = 0; $i < 6; $i++) {
  				$x = $col-$s+$i;
  				$y = $row-$s+$i;
- 				$diagonal1 = $diagonal1.$curBoard[$x][$y];
- 				if ($x == 6 || $y == 5) {
+ 				
+ 				if ($x > 6 || $y > 5) {
  					break;
  				}
+ 				$diagonal1 = $diagonal1.$curBoard[$x][$y];
  			}
  			$posd1 = strpos($diagonal1, $winning);
  				
- 			$s = min(6-$col, 5-$row);
+ 			$s = min(6-$col, $row);
  			$diagonal2="";
  			for ($i = 0; $i < 6; $i++) {
  				$x = $col+$s-$i;
  				$y = $row-$s+$i;
- 				$diagonal2 = $diagonal2.$curBoard[$x][$y];
- 				if ($x == 6 || $y == 0) {
+ 				if ($x < 0 || $y > 5) {
  					break;
  				}
+ 				$c = $curBoard[$x];
+ 				$r = $c[$y];
+ 				$diagonal2 = $diagonal2.$r;
+
  			}
  			$posd2 = strpos($diagonal2, $winning);
  			
- 			if ($posh !== false || $posv !== false || $posd1 !== false || $posd2 !== false) {
- 				goto win;
- 			}
- 			
  			$newBoard = new Board_State();
  			$newBoard->board = $curBoard; 
- 			$newBoard->turn = $newBoard::U1;
+ 			$newBoard->turn = ($curTurn == Board_State::U1) ? Board_State::U2 : Board_State::U1;
  			
  			$this->db->trans_begin(); 
  			$this->match_model->updateBoardState($user->match_id, $newBoard);
@@ -260,8 +285,19 @@ class Board extends CI_Controller {
  			else {
  				$this->db->trans_commit(); 	
  			}
- 				
- 			echo json_encode(array('status'=>'success'));
+ 			
+ 			if ($posh !== false || $posv !== false || $posd1 !== false || $posd2 !== false) {
+ 				goto win;
+ 			}
+ 			
+ 			$cols = '';
+ 			foreach ($curBoard as $col) {
+ 				$cols = $cols.implode($col);	
+ 			}
+ 			if (strpos($cols, '0') === false ){
+ 				goto tied;
+ 			}
+ 			echo json_encode(array('status'=>'success', 'col'=>$col, 'row'=>$row, 'diagonal1'=>$diagonal1, 'diagonal2'=>$diagonal2));
  				
  			return;
  		}
@@ -273,8 +309,14 @@ class Board extends CI_Controller {
  		return; 
  		
  		win: 
- 		echo json_encode(array('status'=>'won', 'message'=>'game over, you won!'));
+ 		$status = ($p == 1) ? Match::U1WON : Match::U2WON; 
+ 		$this->match_model->updateStatus($user->match_id, $status);
+ 		echo json_encode(array('status'=>'success'));
  		return; 
+ 		
+ 		tied: 
+ 		$this->match_model->updateStatus($user->match_id, Match::TIED);
+ 		echo json_encode(array('status'=>'success'));
  		//handle winning condition here
  	}
  	

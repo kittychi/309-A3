@@ -9,8 +9,11 @@
 		var otherUser = "<?= $otherUser->login ?>";
 		var user = "<?= $user->login ?>";
 		var status = "<?= $status ?>";
-
 		var base_url = "<?= base_url() ?>";
+		
+		var me = <?= (isset($playerIndex) === FALSE) ? 1 : 2; ?>;
+		var colour = (me == 1) ? 'red' : 'yellow';
+		
 		
 		
 	</script>
@@ -42,8 +45,6 @@
 
 	</script>
 	<script src="<?= base_url()?>/js/arcade/board.js"></script>
-	
-	<p> game board goes here </p>
 <?php 
 	
 	echo form_textarea('conversation'); 
