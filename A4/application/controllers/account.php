@@ -76,7 +76,7 @@ class Account extends CI_Controller {
 	    	$this->form_validation->set_rules('first', 'First', "required");
 	    	$this->form_validation->set_rules('last', 'last', "required");
 	    	$this->form_validation->set_rules('email', 'Email', "required|is_unique[user.email]");
-	    	$this->form_validation->set_rules('captcha_code', 'Captcha', "required");
+	    	$this->form_validation->set_rules('captcha_code', 'Captcha', "required|'callback_captcha_check'");
 	    	
 	    
 	    	if ($this->form_validation->run() == FALSE)
@@ -85,20 +85,6 @@ class Account extends CI_Controller {
 	    	}
 	    	else  
 	    	{
-	    		// Captcha check
-	    		include_once $_SERVER['DOCUMENT_ROOT'] . '/securimage/securimage.php';
-				$securimage = new Securimage();
-
-				if ($securimage->check($_POST['captcha_code']) == false) {
-					// the code was incorrect
-					// you should handle the error so that the form processor doesn't continue
-
-					// or you can use the following code if there is no validation or you do not know how
-					echo "The security code entered was incorrect.<br /><br />";
-					echo "Please go <a href='javascript:history.go(-1)'>back</a> and try again.";
-					exit;
-				}
-	    		
 	    		$user = new User();
 	    		 
 	    		$user->login = $this->input->post('username');
@@ -114,6 +100,22 @@ class Account extends CI_Controller {
 	    		
 	    		$this->load->view('account/loginForm');
 	    	}
+    }
+
+    public function captcha_check() {
+    	// Captcha check
+		include_once $_SERVER['DOCUMENT_ROOT'] . '/connect4/securimage/securimage.php';
+		$securimage = new Securimage();
+
+		if ($securimage->check($_POST['captcha_code']) == false) {
+			// the code was incorrect
+			// you should handle the error so that the form processor doesn't continue
+			$this->form_validation->set_message('captcha_check', 'The security code entered was incorrect.');
+			return FALSE;
+		}
+
+		return TRUE;
+
     }
 
     
