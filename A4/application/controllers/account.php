@@ -76,6 +76,7 @@ class Account extends CI_Controller {
 	    	$this->form_validation->set_rules('first', 'First', "required");
 	    	$this->form_validation->set_rules('last', 'last', "required");
 	    	$this->form_validation->set_rules('email', 'Email', "required|is_unique[user.email]");
+	    	$this->form_validation->set_rules('captcha_code', 'Captcha', "required|callback_captcha_check");
 	    	
 	    
 	    	if ($this->form_validation->run() == FALSE)
@@ -95,9 +96,26 @@ class Account extends CI_Controller {
 
 	    		$this->load->model('user_model');
 	    		$error = $this->user_model->insert($user);
+
 	    		
 	    		$this->load->view('account/loginForm');
 	    	}
+    }
+
+    public function captcha_check($str) {
+    	// Captcha check
+		include_once $_SERVER['DOCUMENT_ROOT'] . '/connect4/securimage/securimage.php';
+		$securimage = new Securimage();
+
+		if ($securimage->check($_POST['captcha_code']) == false) {
+			// the code was incorrect
+			// you should handle the error so that the form processor doesn't continue
+			$this->form_validation->set_message('captcha_check', 'The security code entered was incorrect.');
+			return FALSE;
+		}
+
+		return TRUE;
+
     }
 
     
