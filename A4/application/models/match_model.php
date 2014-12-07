@@ -48,13 +48,13 @@ class Match_model extends CI_Model {
 	}
 	
 	function getBoardState($id) {
-		$this->db->where('id', $id);
-		$query = $this->db->get('match')->row(0);
-		$json = $query['board_state'];
-		$data = json_decode($json, true);
+		// get blob
+		$query = $this->db->get_where('match', array('id' => $id));
+		$blob = $query->board_state;
+
+		// convert blob to board_state object
+		$board = unserialize($blob);
 		
-		$board = new Board_State();
-		foreach ($data AS $key => $value) $board->{$key} = $value;
 		
 		return $board; 
 		
