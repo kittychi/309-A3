@@ -229,7 +229,7 @@ class Board extends CI_Controller {
  			}
  			$posd1 = strpos($diagonal1, $winning);
  				
- 			$s = m(6-$col, 5-$row);
+ 			$s = min(6-$col, 5-$row);
  			$diagonal2="";
  			for ($i = 0; $i < 6; $i++) {
  				$x = $col+$s-$i;
