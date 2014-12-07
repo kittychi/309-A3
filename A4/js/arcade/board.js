@@ -129,6 +129,8 @@ $(function(){
 	          var rect = this.canvas.getBoundingClientRect();
 	          return {
 	            x: Math.floor(((evt.clientX-rect.left)/(rect.right-rect.left)*this.canvas.width)/100),
+	            
+	            // this doesn't really matter.. 
 	            y: Math.floor(((evt.clientY-rect.top)/(rect.bottom-rect.top)*this.canvas.height)/100)-1
 	          };
 	        }
@@ -136,6 +138,7 @@ $(function(){
 		var curColumnSelected = -1 ; 
 		
 		function setMouseOver(x) {
+			// clear out message box if column changes
 			if (curColumnSelected != x) {
 				writeMessage("");
 			}
@@ -165,14 +168,12 @@ $(function(){
 	          this.messagectx.font = '18pt Helvetica';
 	          this.messagectx.fillStyle = 'black';
 	          this.messagectx.textAlign = 'center';
-	          var width = this.messagectx.measureText(message);
 	          this.messagectx.fillText(message, this.messagecan.width/2, this.messagecan.height/2);
 	          
 	        }
-	        
+	    
         this.canvas.addEventListener('mousedown', function(evt) {
           var mousePos = getMousePos(evt);
-          //drawPiece(mousePos.x, mousePos.y, "yellow");
           var url = base_url+"board/validateMove";
           $.post(url, {col:mousePos.x}, function(data, status, jqXHR) {
         	  var response = JSON.parse(data);

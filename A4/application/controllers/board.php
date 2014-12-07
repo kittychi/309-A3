@@ -145,16 +145,20 @@ class Board extends CI_Controller {
 		echo json_encode(array('status'=>'failure','message'=>$errormsg));
  	}
  	
- 	
+ 	// get the current board status
  	function getBoard() { 
  		$this->load->model('user_model');
  		$this->load->model('match_model');
  		
  		$user = $_SESSION['user'];
- 		
+ 		// only draw board when user is playing
  		$user = $this->user_model->get($user->login);
- 		if ($user->user_status_id != User::PLAYING) {
- 			$errormsg="Not in PLAYING state";
+ 		if ($user->user_status_id != User::PLAYING )  {
+ 			if ($user->user_status_id == User::WAITING) {
+ 				$errormsg = "Waiting for other player";
+ 			} else {
+ 				$errormsg="Not in PLAYING state";
+ 			}
  			goto error;
  		}
  		
@@ -163,6 +167,8 @@ class Board extends CI_Controller {
  
  		$board = $boardstate->board; 
  		$turn = $boardstate->turn; 
+ 		
+ 		// check if game ended
 		$status = $match->match_status_id; 
  		if ($status != Match::ACTIVE) {
  			goto gameend;
@@ -176,6 +182,7 @@ class Board extends CI_Controller {
  		echo json_encode(array('status'=>'failure', 'message'=>$errormsg));
  		return; 
  		
+ 		// this is where the game goes to end
  		gameend:
  		$endmsg = "Game over! \n";
  		if ($status == Match::U1WON) {
@@ -233,15 +240,15 @@ class Board extends CI_Controller {
 			}
  			
  			$curBoard[$col][$row] = $p;
-
+			
  			$winning = $p.$p.$p.$p;
- 			//check if horizontal win
+ 			// check if horizontal win
  			$horizonal = $curBoard[0][$row].$curBoard[1][$row].$curBoard[2][$row].$curBoard[3][$row].$curBoard[4][$row].$curBoard[5][$row].$curBoard[6][$row];
  			$posh = strpos($horizonal, $winning);
- 			
+ 			// check if vertical win
  			$vertical =implode($curBoard[$col]);
  			$posv = strpos($vertical, $winning);
- 			
+ 			// check if diagonal win
  			$s = min($col, $row);
  			$diagonal1 = "";
  			for ($i = 0; $i < 6; $i++) {
@@ -254,7 +261,7 @@ class Board extends CI_Controller {
  				$diagonal1 = $diagonal1.$curBoard[$x][$y];
  			}
  			$posd1 = strpos($diagonal1, $winning);
- 				
+ 			// check if other diagonal win
  			$s = min(6-$col, $row);
  			$diagonal2="";
  			for ($i = 0; $i < 6; $i++) {
@@ -270,6 +277,7 @@ class Board extends CI_Controller {
  			}
  			$posd2 = strpos($diagonal2, $winning);
  			
+ 			// update the board state
  			$newBoard = new Board_State();
  			$newBoard->board = $curBoard; 
  			$newBoard->turn = ($curTurn == Board_State::U1) ? Board_State::U2 : Board_State::U1;
@@ -286,10 +294,12 @@ class Board extends CI_Controller {
  				$this->db->trans_commit(); 	
  			}
  			
+ 			// one of winning conditions met, trigger end game
  			if ($posh !== false || $posv !== false || $posd1 !== false || $posd2 !== false) {
  				goto win;
  			}
  			
+ 			// check for tied game
  			$cols = '';
  			foreach ($curBoard as $col) {
  				$cols = $cols.implode($col);	
@@ -297,6 +307,8 @@ class Board extends CI_Controller {
  			if (strpos($cols, '0') === false ){
  				goto tied;
  			}
+ 			
+ 			// game didn't end yet, and everything went through fine
  			echo json_encode(array('status'=>'success'));
  				
  			return;
@@ -317,7 +329,6 @@ class Board extends CI_Controller {
  		tied: 
  		$this->match_model->updateStatus($user->match_id, Match::TIED);
  		echo json_encode(array('status'=>'success'));
- 		//handle winning condition here
  	}
  	
  }
