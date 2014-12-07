@@ -7,7 +7,7 @@
 ?>		
 			<tr>
 			<td> 
-			<?= anchor("arcade/invite?login=" . $user->login,$user->fullName()) ?> 
+			<?php anchor("arcade/invite?login=" . $user->login,$user->fullName()) ?> 
 			</td>
 			</tr>
 

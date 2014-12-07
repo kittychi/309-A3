@@ -50,10 +50,10 @@ class Account extends CI_Controller {
     				
     				redirect('arcade/index', 'refresh'); //redirect to the main application page
     			}
- 			else {   			
-				$data['errorMsg']='Incorrect username or password!';
- 				$this->load->view('account/loginForm',$data);
- 			}
+	 			else {   			
+					$data['errorMsg']='Incorrect username or password!';
+	 				$this->load->view('account/loginForm',$data);
+	 			}
     		}
     }
 
