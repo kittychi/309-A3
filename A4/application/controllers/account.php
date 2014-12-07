@@ -76,7 +76,7 @@ class Account extends CI_Controller {
 	    	$this->form_validation->set_rules('first', 'First', "required");
 	    	$this->form_validation->set_rules('last', 'last', "required");
 	    	$this->form_validation->set_rules('email', 'Email', "required|is_unique[user.email]");
-	    	$this->form_validation->set_rules('captcha_code', 'Captcha', "required|'callback_captcha_check'");
+	    	$this->form_validation->set_rules('captcha_code', 'Captcha', "required|callback_captcha_check");
 	    	
 	    
 	    	if ($this->form_validation->run() == FALSE)
@@ -102,7 +102,7 @@ class Account extends CI_Controller {
 	    	}
     }
 
-    public function captcha_check() {
+    public function captcha_check($str) {
     	// Captcha check
 		include_once $_SERVER['DOCUMENT_ROOT'] . '/connect4/securimage/securimage.php';
 		$securimage = new Securimage();
